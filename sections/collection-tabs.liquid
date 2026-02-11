@@ -1,0 +1,190 @@
+{%- if section.blocks.size > 0 -%}
+  {%- render 'section-spacing-collapsing' -%}
+
+  <div {% render 'section-properties' %}>
+    <div class="tabs">
+      <div class="section-stack">
+        <div class="tabs-container">
+
+          {%- if section.settings.title != blank or section.settings.title != blank -%}
+            <div class="page-section-header text-center">
+                <h2 class="section-title">{{ section.settings.title }}</h2>
+                <p class="section-subtitle">{{ section.settings.subtitle }}</p>
+            </div>
+          {%- endif -%}
+  
+          <x-tabs class="tabs-inner">
+            <template shadowrootmode="open">
+              <style>
+                .collection-tabs-wrap{
+                    display: grid;
+                    align-items: center;
+                    text-align: start;
+                    gap: 8px;
+                    overflow-x: auto;
+                    scrollbar-width: none;
+                }
+                .collection-tabs-wrap .tablist-container {
+                    white-space: nowrap;
+                }
+                @media screen and (min-width: 1000px) {
+                    .collection-tabs-wrap {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
+              </style>
+              {% if section.blocks.size > 1 %}
+                <div class="collection-tabs-wrap">
+                  <div class="tablist-container">
+                    <slot role="tablist" part="tab-list" name="title"></slot>
+                  </div>
+                </div>
+              {% endif %}
+              <slot part="tab-panels" name="content"></slot>
+            </template>
+            {%- for block in section.blocks -%}
+              {%- assign title = block.settings.title -%}
+              {%- assign content = block.settings.collection -%}
+
+              {% assign collection_handle = content.handle %}
+              {% assign total_products = content.products.size %}
+              {% assign first_page_limit = 50 %}
+
+              {%- if title != blank and content != blank -%}
+                <button type="button" slot="title" class="tabs-nav__button text-center" {{ block.shopify_attributes }} {% if section.blocks.size == 1 and forloop.index == 1 %}style="display: none;"{% endif %}>
+                  {{ title | escape }}
+                </button>
+                <div role="tabpanel" class="tab-content" slot="content" {% cycle '', 'hidden', 'hidden', 'hidden', 'hidden' %}>
+                  <div class="section-stack">
+                    {%- assign link_url = content.url -%}
+                    <product-list class="product-list" id="lazy-wrapper-{{ collection_handle }}">
+                        {%- assign products = content.products -%}
+                        {% if template.suffix == 'bulk-order' %}
+                
+                            {%- for product in products limit: first_page_limit -%}
+                            {%- render 'product-card', product: product, stacked: true, position: forloop.index, background: #FFFFFF, text_color: #161616, show_badges: true -%}
+                            {%- endfor -%}
+                            
+                        {% else %}
+                            {%- for product in products limit: 8 -%}
+                            {%- render 'product-card', product: product, stacked: true, position: forloop.index, background: #FFFFFF, text_color: #161616, show_badges: true -%}
+                            {%- endfor -%}
+                        {% endif %}
+                    </product-list>
+                  </div>
+                  {% if template.suffix == 'bulk-order' %}
+                    
+                  {% else %}
+                    {% if content.products.size > 8 %}
+                      <div class="link-to-coll">
+                        <a href="{{ link_url }}">View All</a>
+                      </div>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </x-tabs>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% style %}
+.tabs-new .tabs-nav__button{
+    padding: 12px 24px;
+    font-size: 16px;
+    color: #1a332e;
+    border-radius: 32px;
+    border: 1px solid #F8EA8B;
+    background: #FFF;
+    margin: 0 4px;
+}
+.tabs-new .tabs-nav__button[aria-selected=true]{
+    background: #FFC844;
+    font-weight: 600;
+}
+#shopify-section-{{ section.id }} .product-list {
+    --product-list-items-per-row: 2;
+    --product-list-grid: auto / auto-flow 280px; !important;
+    gap: 16px;
+    overflow-x: auto;
+}
+#shopify-section-{{ section.id }} .product-list::-webkit-scrollbar{ display: none; }
+
+@media screen and (min-width: 700px) {
+    #shopify-section-{{ section.id }} .product-list {
+    --product-list-items-per-row: 3;
+    --product-list-grid:  auto / auto-flow 308px !important;
+    }
+    .tabs-new .tabs .tabs-container .tabs-inner{
+    gap:48px !important;
+}
+}
+
+@media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} .product-list {
+        --product-list-items-per-row: 4;
+    }
+}
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Collection Tabs",
+  "class": "shopify-section--collection-tabs tabs-new",
+  "tag": "section",
+  "max_blocks": 4,
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Heading"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Subtitle"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Collection Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Tab"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Tabs",
+      "blocks": [
+        {
+          "type": "tab"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

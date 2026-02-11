@@ -1,0 +1,124 @@
+{%- if link.links.size > 0 -%}
+    <style>
+      @media screen and (min-width: 1150px) {
+        #mega-menu-{{ mega_menu_block.id }} {
+          --mega-menu-nav-column-max-width: {% if mega_menu_block.settings.submenu_style == 'bold_text' %}{% if link.links.size <= 2 %}240px{% else %}200px{% endif %}{% else %}{% if link.links.size <= 2 %}180px{% else %}160px{% endif %}{% endif %};
+          --mega-menu-justify-content: {% if link.links.size == 0 or mega_menu_block.settings.layout == 'horizontal_center' and mega_menu_block.settings.stretch_promo == false %}center{% else %}space-between{% endif %};
+          --mega-menu-nav-gap: {% if mega_menu_block.settings.stretch_promo %}var(--spacing-12){% else %}var(--spacing-8){% endif %};
+  
+          {% if link.links.size > 3 %}
+            --column-list-max-width: 75%;
+          {% endif %}
+        }
+      }
+  
+      @media screen and (min-width: 1400px) {
+        #mega-menu-{{ mega_menu_block.id }} {
+          --mega-menu-nav-column-max-width: {% if mega_menu_block.settings.submenu_style == 'bold_text' %}{% if link.links.size == 1 %}260px{% elsif link.links.size == 2 %}240px{% else %}210px{% endif %}{% else %}{% if link.links.size == 1 %}220px{% elsif link.links.size == 2 %}200px{% else %}180px{% endif %}{% endif %};
+          --mega-menu-nav-gap: {% if mega_menu_block.settings.layout == 'horizontal_center' %}var(--spacing-12){% else %}var(--spacing-16){% endif %};
+  
+          {% if link.links.size > 4 %}
+            --column-list-max-width: 75%;
+          {% else %}
+            --column-list-max-width: max-content;
+          {% endif %}
+        }
+      }
+  
+      @media screen and (min-width: 1600px) {
+        #mega-menu-{{ mega_menu_block.id }} {
+          --mega-menu-nav-gap: var(--spacing-16);
+        }
+      }
+  
+      @media screen and (min-width: 1800px) {
+        #mega-menu-{{ mega_menu_block.id }} {
+          --mega-menu-nav-gap: var(--spacing-20);
+        }
+      }
+    </style>
+  {%- endif -%}
+  
+  <div id="mega-menu-{{ mega_menu_block.id }}" class="mega-menu {% if link.links.size == 0 %}justify-center{% endif %}">
+    {%- if link.links.size > 0 -%}
+      <ul class="mega-menu__nav" role="list">
+        {%- for sub_link in link.links -%}
+          <li class="v-stack gap-4 justify-items-start main_menu_cu {% if forloop.first %}active{% endif %}">
+            <a {% if sub_link.url != '#' %}href="{{ sub_link.url }}"{% endif %} class="{% if mega_menu_block.settings.submenu_style == 'bold_heading' %}h5{% endif %}" {% if sub_link.current %}aria-current="page"{% endif %}>
+              <span {% if sub_link.url != '#' %}class="{% if mega_menu_block.settings.submenu_style == 'bold_text' %}{% else %}reversed-link hover:show{% endif %}"{% endif %}>
+                {{- sub_link.title -}}
+              </span>
+              {%- if sub_link.levels > 0 -%}
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M12.2779 10.056C11.5439 9.48219 10.8908 8.96774 10.2337 8.45766C9.1576 7.62229 8.0654 6.80629 7.00848 5.9482C6.56783 5.58997 6.19705 5.1477 5.80133 4.73723C5.63145 4.561 5.48297 4.33407 5.68451 4.12167C5.90815 3.88576 6.15221 4.03431 6.33888 4.21779C8.34705 6.19189 10.8331 7.54714 13.0393 9.26498C13.6895 9.77122 13.7742 10.1974 13.2237 10.8238C13.0533 11.0245 12.8684 11.2128 12.6702 11.3869C11.2302 12.6086 9.79944 13.8421 8.33096 15.0297C7.85945 15.411 7.28747 15.6735 6.7499 15.9702C6.65829 16.0207 6.41696 16.0002 6.40264 15.9591C6.34958 15.8076 6.2914 15.5861 6.36524 15.4764C6.65547 15.0447 6.94482 14.5912 7.32684 14.2452C8.24881 13.4102 9.22456 12.6334 10.1749 11.8288C10.7338 11.3556 11.2846 10.873 11.8412 10.397C11.963 10.2928 12.094 10.1989 12.2779 10.056Z" fill="#C2DB6E" stroke="#C2DB6E" stroke-width="2"/>
+                </svg>
+              {% endif %}
+            </a>
+  
+            {%- if sub_link.levels > 0 -%}
+              <ul class="mega-menu-child-1 v-stack gap-2 justify-items-start sub_menu_cu mega-menu-arrow-scrollable-list" role="list">
+                {%- for sub_sub_link in sub_link.links -%}
+                  <li>
+                    <a href="{{ sub_sub_link.url }}">
+                      <div class="img-nav-last">
+                        {% assign linkcoll = sub_sub_link.url | replace: '/collections/', '' %}
+                        <img src="{{ collections[linkcoll].metafields.custom.menu_image | file_url  }}" width="100" height="100" />
+                        <span {% if mega_menu_block.settings.submenu_style == 'bold_text' %}class="reversed-link hover:show"{% endif %}>{{- sub_sub_link.title -}}</span>
+                      </div>
+                    </a>
+                  </li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  
+    {% liquid
+      # To maximize space, we force a carousel mode depending on the actual content
+  
+      assign promo_item_count = 0
+      assign use_carousel_fallback_until = ''
+  
+      for i in (1..3)
+        assign image_setting = 'image_' | append: i
+  
+        if mega_menu_block.settings[image_setting] != blank
+          assign promo_item_count = promo_item_count | plus: 1
+        endif
+      endfor
+  
+      if mega_menu_block.settings.product != blank
+        assign promo_item_count = promo_item_count | plus: 1
+      endif
+  
+      if link.links.size > 0 and promo_item_count == 4 or mega_menu_block.settings.promo_content_layout == 'carousel'
+        assign force_carousel_mode = true
+      else
+        if link.links.size == 2
+          if promo_item_count == 3 and mega_menu_block.settings.layout == 'grid'
+            assign use_carousel_fallback_until = 'xl'
+          endif
+        elsif link.links.size >= 3 and promo_item_count == 3
+          if use_promo_collage
+            assign use_carousel_fallback_until = 'xl'
+          else
+            assign use_carousel_fallback_until = '2xl'
+          endif
+        endif
+      endif
+    %}
+
+    {%- if promo_item_count > 0 -%}
+      {%- if force_carousel_mode -%}
+        {%- render 'navigation-promo-block', mega_menu_block: mega_menu_block, force_carousel_mode: force_carousel_mode -%}
+      {% else %}
+        {%- if use_carousel_fallback_until != '' -%}
+          {%- render 'navigation-promo-block', navigation_layout: navigation_layout, mega_menu_block: mega_menu_block, link_col: link.links.size, is_navigation_drawer: false, use_carousel_fallback_until: use_carousel_fallback_until -%}
+        {%- endif -%}
+    
+        {%- render 'navigation-promo-block', navigation_layout: navigation_layout, mega_menu_block: mega_menu_block, link_col: link.links.size, is_navigation_drawer: false, hide_promo_until: use_carousel_fallback_until -%}
+      {%- endif -%}
+    {%- endif -%}
+  </div>
