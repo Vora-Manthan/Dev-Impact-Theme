@@ -35,6 +35,9 @@ Supported variables
           <span class="reversed-link hover:show">{{ product.title }}</span>
         </a>
       {%- endif -%}
+      {% if product.description != blank %}
+        <span class="text-sm">{{ product.description }}</span>
+      {% endif %}
 
       {%- render 'price-list', product: product, size: 'sm' -%}
     </div>
