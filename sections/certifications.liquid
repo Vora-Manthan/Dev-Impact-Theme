@@ -1,0 +1,468 @@
+{% schema %}
+{
+  "name": "Certifications",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Background Color",
+      "default": "#FDFDE0"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wave",
+      "label": "Show Wavy Background",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout Style",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Standard Grid (Certifications)"
+        },
+        {
+          "value": "highlight",
+          "label": "Product Highlight (Designed in India)"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Globally Tested"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "100% Free from Harmful Toxins"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Image (Optional)",
+      "info": "Upload a large central image (e.g., product exploded view). If used, layout changes to 'Product Highlight' style."
+    },
+    {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button Label",
+        "default": "VIEW ALL CERTIFICATIONS"
+    },
+    {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "cert_item",
+      "name": "Certification / Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon Image"
+        },
+        {
+          "type": "html",
+          "id": "custom_icon",
+          "label": "Custom Icon (SVG/HTML)",
+          "info": "Use this for SVG code. Overrides Image."
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>FDA Approved</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Certifications",
+      "blocks": [
+        {
+          "type": "cert_item",
+          "settings": {
+            "text": "<p>FDA Approved</p>"
+          }
+        },
+        {
+          "type": "cert_item",
+          "settings": {
+            "text": "<p>IP Patented</p>"
+          }
+        },
+        {
+          "type": "cert_item",
+          "settings": {
+            "text": "<p>Child Safety Certificate</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+
+<style>
+  .certifications-section {
+    background-color: {{ section.settings.section_bg }};
+    position: relative;
+    padding: 60px 0;
+    overflow: hidden;
+    color: #1A2E1A; /* Dark green/black from image */
+  }
+
+  /* Wavy Background Elements */
+  .wave-top, .wave-bottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .wave-top {
+    top: -1px; /* Overlap slightly to prevent gaps */
+    transform: rotate(0deg);
+  }
+
+  .wave-bottom {
+    bottom: -1px;
+  }
+
+  .wave-svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 60px; /* Adjust height of wave */
+  }
+
+  .wave-svg path {
+    fill: #ffffff; /* Page background color */
+  }
+  
+  .layout-grid .cert-icon-wrapper {
+      width: 140px;
+      height: 140px;
+  }
+
+  .layout-highlight .cert-icon-wrapper {
+      width: 80px;
+      height: 80px;
+  }
+  
+  .layout-highlight .cert-grid {
+      max-width: 600px; 
+      margin: 0 auto;
+      gap: 30px; /* Vertical gap */
+  }
+  
+  /* 1 Icon in First Row, 2 in Second Row Logic */
+  .layout-highlight .cert-item {
+      flex: 1 1 100%; /* Default to full width for first item */
+      max-width: 100%;
+  }
+
+  .layout-highlight .cert-item:nth-child(n+2) {
+      flex: 1 1 45%; /* Next items share row */
+      max-width: 50%;
+  }
+  
+  /* Remove side dividers for the top item in highlight mode */
+  .layout-highlight .cert-item:first-child::after {
+      display: none;
+  }
+  
+  /* Divider for the left item in the second row */
+  .layout-highlight .cert-item:nth-child(2)::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 10%;
+      height: 80%;
+      width: 1px;
+      background-color: #333;
+      opacity: 0.2;
+      display: block;
+  }
+  
+  /* Ensure last item has no divider */
+  .layout-highlight .cert-item:last-child::after {
+      display: none;
+  }
+  
+  /* If the previous/next section has a different color, the user might need to adjust this fill */
+
+  .cert-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+    text-align: center;
+  }
+
+  .cert-heading-wrapper {
+    margin-bottom: 50px;
+  }
+
+  .cert-heading {
+    font-size: 3rem;
+    font-weight: 700;
+    margin: 0 0 10px 0;
+    font-family: 'DM Serif Display', serif; /* Matching theme font */
+  }
+
+  .cert-subheading {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  /* Main Image Layout (Designed in India) */
+  .cert-main-image {
+    max-width: 800px;
+    margin: 0 auto 50px auto;
+    width: 100%;
+  }
+
+  .cert-main-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Grid Layout */
+  .cert-grid {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Align items at top */
+    flex-wrap: wrap;
+    gap: 0; /* Gaps handled by padding/borders */
+  }
+  
+  /* If main image is present, reduce grid width/adjust */
+  .cert-grid.has-main-image {
+      max-width: 600px; /* Center the icons tighter if under an image */
+      margin: 0 auto;
+      gap: 50px;
+  }
+  
+  .cert-item {
+    flex: 1;
+    padding: 0 30px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 200px;
+  }
+
+  /* Vertical Divider Logic */
+  .cert-item:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 10%;
+    height: 80%;
+    width: 1px;
+    background-color: #333; /* Dark divider color */
+    opacity: 0.2;
+  }
+  
+  /* Remove dividers for the "Designed in India" layout variant if preferred, 
+     or keep them. The image shows a small vertical line between the two bottom icons. 
+     So we keep the logic. */
+
+  .cert-icon-wrapper {
+    width: 120px;
+    height: 120px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Circular background if image is used directly ? 
+       The images show badges which are circular themselves. 
+       If using raw icons for "Designed in India", they are smaller. */
+  }
+  
+  .cert-grid.has-main-image .cert-icon-wrapper {
+      width: 60px;
+      height: 60px; /* Smaller icons for the bottom row */
+  }
+
+  .cert-icon-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  .cert-custom-icon {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+  
+  .cert-custom-icon svg {
+      width: 100%;
+      height: 100%;
+  }
+
+  .cert-text {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  
+  .cert-text p {
+      margin: 0;
+  }
+  
+  .cert-button-wrapper {
+      margin-top: 60px;
+  }
+  
+  .cert-button {
+      display: inline-block;
+      text-decoration: none;
+      color: #1A2E1A;
+      font-weight: 700;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-bottom: 2px solid #1A2E1A;
+      padding-bottom: 5px;
+      transition: opacity 0.3s;
+  }
+  
+  .cert-button:hover {
+      opacity: 0.7;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .cert-heading {
+      font-size: 2rem;
+    }
+    
+    .cert-grid {
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+    }
+    
+    .cert-grid.has-main-image {
+        flex-direction: row; /* Keep side-by-side for small icons if they fit, otherwise column */
+        gap: 30px;
+    }
+
+    .cert-item {
+      width: 100%;
+      padding: 0;
+      border: none;
+    }
+
+    .cert-item:not(:last-child)::after {
+      display: none; /* Hide vertical dividers on mobile column layout */
+    }
+    
+    /* Re-add dividers for the side-by-side layout if needed, 
+       but typically mobile stacks. 
+       For the "Designed in India" layout, user might want them side-by-side on mobile too 
+       since they are small. */
+       
+    .cert-grid.has-main-image .cert-item {
+        width: auto; 
+    }
+    .cert-grid.has-main-image .cert-item:not(:last-child)::after {
+        display: block; /* Keep divider for the small icon row */
+    }
+  }
+</style>
+
+<div class="certifications-section">
+  {% if section.settings.show_wave %}
+    <div class="wave-top">
+      <svg class="wave-svg" viewBox="0 0 1440 64" preserveAspectRatio="none">
+        <path d="M0,64L48,60.8C96,58,192,51,288,42.7C384,34,480,25,576,26.7C672,29,768,43,864,48C960,53,1056,51,1152,42.7C1248,34,1344,19,1392,11.7L1440,4.3L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+      </svg>
+    </div>
+  {% endif %}
+
+  <div class="cert-container layout-{{ section.settings.layout_style }}">
+    <!-- Content omitted for brevity, logic handled by CSS classes -->
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <div class="cert-heading-wrapper">
+        {% if section.settings.heading != blank %}
+          <h2 class="cert-heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+        {% if section.settings.subheading != blank %}
+          <div class="cert-subheading">{{ section.settings.subheading }}</div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.layout_style == 'highlight' and section.settings.main_image != blank %}
+      <div class="cert-main-image">
+        {{ section.settings.main_image | image_url: width: 1200 | image_tag: loading: 'lazy' }}
+      </div>
+    {% endif %}
+
+    <div class="cert-grid">
+      {% for block in section.blocks %}
+        <div class="cert-item" {{ block.shopify_attributes }}>
+          <div class="cert-icon-wrapper">
+            {% if block.settings.custom_icon != blank %}
+              <div class="cert-custom-icon">{{ block.settings.custom_icon }}</div>
+            {% elsif block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 300 | image_tag: loading: 'lazy' }}
+            {% else %}
+               <!-- Placeholder if needed -->
+               {{ 'product-1' | placeholder_svg_tag }}
+            {% endif %}
+          </div>
+          {% if block.settings.text != blank %}
+            <div class="cert-text">{{ block.settings.text }}</div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.button_label != blank %}
+      <div class="cert-button-wrapper">
+        <a href="{{ section.settings.button_link }}" class="cert-button">{{ section.settings.button_label }}</a>
+      </div>
+    {% endif %}
+  </div>
+  
+  {% if section.settings.show_wave %}
+    <div class="wave-bottom">
+      <svg class="wave-svg" viewBox="0 0 1440 64" preserveAspectRatio="none">
+         <path d="M0,0L48,5.3C96,11,192,21,288,29.3C384,37,480,48,576,45.3C672,43,768,27,864,21.3C960,16,1056,16,1152,24C1248,32,1344,48,1392,56L1440,64L1440,64L1392,64C1344,64,1248,64,1152,64C1056,64,960,64,864,64C768,64,672,64,576,64C480,64,384,64,288,64C192,64,96,64,48,64L0,64Z"></path>
+      </svg>
+    </div>
+  {% endif %}
+</div>

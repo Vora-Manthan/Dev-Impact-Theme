@@ -1,240 +1,312 @@
 {%- render 'section-spacing-collapsing' -%}
 
 {%- assign text_position = section.settings.text_position -%}
-{%- assign values_column_count = section.blocks | where: 'type', 'values' | size -%}
-
-{%- comment -%}
-------------------------------------------------------------------------------------------------------------------------
-CSS
-------------------------------------------------------------------------------------------------------------------------
-{%- endcomment -%}
+{%- assign values_blocks = section.blocks | where: 'type', 'values' -%}
+{%- assign values_column_count = values_blocks.size -%}
 
 <style>
   #shopify-section-{{ section.id }} {
-    --feature-chart-values-columns-count: {{ values_column_count }};
+    --comparison-grid-cols: minmax(150px, 200px) repeat({{ values_column_count }}, minmax(200px, 1fr));
+    --comparison-card-radius: 20px;
+    --comparison-bg-color: {{ section.settings.background | default: '#fffdf7' }};
   }
 
-  @media screen and (min-width: 700px) {
-    {%- if text_position == 'center' -%}
-      #shopify-section-{{ section.id }} .section-stack__main {
-        width: {% if values_column_count == 1 %}680px{% elsif values_column_count == 2 %}900px{% else %}100%{% endif %};
-        min-width: 680px;
-        margin-inline: auto;
-      }
-    {%- else -%}
-      #shopify-section-{{ section.id }} .section-stack {
-        flex-wrap: wrap;
-        justify-content: start;
-      }
+  .comparison-table-container {
+    background-color: var(--comparison-bg-color);
+    padding: 3rem 1rem;
+    width: 100%;
+    margin: 0 auto;
+  }
 
-      #shopify-section-{{ section.id }} .section-stack__intro {
-        flex: 1 0 350px; /* Allow to grow and shrink with a range from 350px to 750px */
-        max-width: 750px;
-        width: auto;
-      }
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: var(--comparison-grid-cols);
+    grid-auto-rows: auto;
+    gap: 0;
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: auto;
+    padding-bottom: 2rem; /* Space for shadow */
+  }
 
-      #shopify-section-{{ section.id }} .section-stack__main {
-        flex: 1 1 {% if values_column_count == 1 %}600px{% elsif values_column_count == 2 %}900px{% else %}auto{% endif %};
-        min-width: 450px;
-        width: auto;
-      }
-    {%- endif -%}
+  /* Global Cell Styling */
+  .comparison-cell {
+    padding: 1rem 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+  
+  .comparison-cell--label {
+    justify-content: flex-start;
+    text-align: left;
+    font-weight: 600;
+    color: {{ section.settings.text_color }};
+    padding-left: 0;
+  }
+
+  /* Value Borders */
+  .comparison-cell--value {
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+
+  /* Card Background (Pseudo-columns) */
+  .comparison-card-bg {
+    grid-row: 1 / -1;
+    border-radius: var(--comparison-card-radius);
+    background: {{ section.settings.chart_background | default: '#ffffff' }};
+    border: 1px solid rgba(0,0,0,0.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    pointer-events: none;
+    z-index: 1;
+    margin: 0 10px;
+  }
+
+  /* Product Header (Image + Title) */
+  .comparison-header {
+    flex-direction: column;
+    gap: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 1rem;
+  }
+  
+  .product-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 0.85;
+    border-radius: calc(var(--comparison-card-radius) - 1px) calc(var(--comparison-card-radius) - 1px) 0 0;
+    overflow: hidden;
+    margin: -2rem -1rem 0 -1rem; /* Negative margin to fill top of card */
+    max-width: calc(100% + 2rem);
+    background: {{ section.settings.background_gradient | default: '#f5f5f5' }};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .product-image-wrapper:hover img {
+    transform: scale(1.05);
+  }
+
+  .product-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+  }
+
+  /* Footer (Price + Button) */
+  .comparison-footer {
+    flex-direction: column;
+    gap: 1rem;
+    padding-bottom: 2rem;
+    border-bottom: none;
+    margin-top: auto; /* Push to bottom if height allows */
+  }
+
+  .price-display {
+    display: flex;
+    gap: 0.5rem;
+    align-items: baseline;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .price-sale {
+    color: #e65100;
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+
+  .price-compare {
+    color: #999;
+    text-decoration: line-through;
+    font-size: 0.85rem;
+  }
+
+  .buy-button {
+    background: #d4e157; /* Lime Green Default */
+    color: #000;
+    border-radius: 9999px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    width: 90%;
+    text-align: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .buy-button:hover {
+    filter: brightness(0.95);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .section-intro {
+    text-align: center;
+    margin-bottom: 3rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Icon styling */
+  .icon-check { stroke: #66bb6a; }
+  .icon-cross { stroke: #ef5350; }
+
+  @media screen and (max-width: 768px) {
+    .comparison-grid {
+      /* Enable horizontal scroll on mobile */
+      grid-template-columns: 120px repeat({{ values_column_count }}, 220px);
+      padding-right: 1rem;
+    }
+    .comparison-card-bg {
+      margin: 0 5px;
+    }
+    .product-image-wrapper {
+       aspect-ratio: 1 / 1;
+    }
   }
 </style>
 
-{%- comment -%}
-------------------------------------------------------------------------------------------------------------------------
-LIQUID
-------------------------------------------------------------------------------------------------------------------------
-{%- endcomment -%}
-
 <div {% render 'section-properties' %}>
-  <div class="section-stack {% if text_position != 'center' %}section-stack--horizontal{% else %}section-stack--center{% endif %} {% if text_position == 'end' %}section-stack--reverse{% endif %}">
-    {%- if section.settings.subheading != blank or section.settings.title != blank or section.settings.content != blank or section.settings.button_text != blank -%}
-      <div class="section-stack__intro">
-        <div class="prose {% if text_position == 'center' %}text-center{% endif %}">
-          {%- if section.settings.subheading != blank -%}
-            <p class="subheading">{{ section.settings.subheading | escape }}</p>
-          {%- endif -%}
-
-          {%- if section.settings.title != blank -%}
-            <h2 class="h2">
-              {%- render 'styled-text', content: section.settings.title, text_color: section.settings.heading_color, gradient: section.settings.heading_gradient -%}
-            </h2>
-          {%- endif -%}
-
-          {{- section.settings.content -}}
-
-          {%- if section.settings.button_text != blank -%}
-            {%- render 'button', size: 'lg', href: section.settings.button_url, content: section.settings.button_text, background: section.settings.button_background, text_color: section.settings.button_text_color -%}
-          {%- endif -%}
-        </div>
-      </div>
-    {%- endif -%}
-
-    <div class="section-stack__main">
-      {%- assign text_color = section.settings.chart_text_color | default: settings.text_color -%}
-      {%- assign background_color = section.settings.chart_background -%}
-
-      {%- if background_color == blank or background_color == 'rgba(0,0,0,0)' -%}
-        {%- assign background_color = settings.background | color_mix: text_color, 95 -%}
+  {%- if section.settings.subheading != blank or section.settings.title != blank -%}
+    <div class="section-intro">
+      {%- if section.settings.title != blank -%}
+        <h2 class="h2">
+          {%- render 'styled-text', content: section.settings.title, text_color: section.settings.heading_color, gradient: section.settings.heading_gradient -%}
+        </h2>
       {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p class="subheading">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
 
-      <feature-chart max-rows="{{ section.settings.max_rows }}" {% render 'surface', class: 'feature-chart', background: background_color, text_color: text_color %}>
-        <div class="feature-chart__table {% if values_column_count > 1 %}feature-chart__table--multi-columns{% endif %} feature-chart__table--product divide-y scroll-area">
-          {%- assign headings_block = section.blocks | where: 'type', 'headings' | first -%}
-          {%- assign values_blocks = section.blocks | where: 'type', 'values' -%}
-          {%- assign outputted_count = 0 -%}
-          {%- assign total_rows_count = 0 -%}
+  <div class="comparison-table-container">
+    <div class="comparison-grid">
+      
+      {%- comment -%} Background Cards (Grid Overlay) {%- endcomment -%}
+      {%- for block in values_blocks -%}
+        <div class="comparison-card-bg" style="grid-column: {{ forloop.index | plus: 1 }}; grid-row: 1 / -1;"></div>
+      {%- endfor -%}
 
-          {%- for i in (1..20) -%}
-            {%- assign heading_key = 'heading_' | append: i -%}
-            {%- assign value_key = 'value_' | append: i -%}
+      {%- comment -%} 
+        ROW 1: HEADERS 
+      {%- endcomment -%}
+      
+      <div class="comparison-cell comparison-cell--label" style="grid-column: 1; grid-row: 1;">
+        <!-- Placeholder for top-left label if needed -->
+      </div>
 
-            {%- assign heading_value = headings_block.settings[heading_key] -%}
-
-            {%- comment -%}We only output the line if at least one value is defined{%- endcomment -%}
-            {%- if heading_value != blank and values_blocks[0].settings[value_key] != blank or values_blocks[1].settings[value_key] != blank or values_blocks[2].settings[value_key] != blank -%}
-              {%- assign total_rows_count = total_rows_count | plus: 1 -%}
-            {%- endif -%}
-          {%- endfor -%}
-
-          {%- comment -%}We need to create a first row for the products if any{%- endcomment -%}
-          {%- capture product_row -%}
-            {%- for product_column in values_blocks -%}
-              {%- if product_column.settings.product != blank -%}
-                {%- assign chart_product = product_column.settings.product -%}
-
-                <div class="feature-chart__product">
-                  {%- if section.settings.viewing_product != blank and request.page_type == 'product' and product == chart_product -%}
-                    <span class="badge">{{ section.settings.viewing_product }}</span>
-                  {%- endif -%}
-
-                  {%- if section.settings.show_product_image and chart_product.featured_media -%}
-                    <a href="{{ chart_product.url }}">
-                      {{- chart_product.featured_image | image_url: width: chart_product.featured_image.width | image_tag: sizes: '(max-width: 699px) 80px, 150px', widths: '80,150,160,300' -}}
-                    </a>
-                  {%- endif -%}
-
-                  {%- capture color_swatch -%}
-                    {%- if section.settings.show_product_swatch -%}
-                      {%- assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ',' -%}
-
-                      {%- for color_label in color_label_list -%}
-                        {%- if chart_product.options_by_name[color_label] != blank -%}
-                          <div class="h-stack gap-2 sm:gap-2-5">
-                            {%- for option_value in chart_product.options_by_name[color_label].values -%}
-                              {%- render 'option-value', type: 'swatch', option_value: option_value, url: option_value.variant.url, size: 'sm' -%}
-                            {%- endfor -%}
-                          </div>
-
-                          {%- break -%}
-                        {%- endif -%}
-                      {%- endfor -%}
-                    {%- endif -%}
-                  {%- endcapture -%}
-
-                  <div class="v-stack {% if color_swatch != blank %}gap-6{% else %}gap-5{% endif %}">
-                    <div class="v-stack gap-2">
-                      <div class="v-stack sm:gap-0.5">
-                        <a href="{{ chart_product.url }}" class="bold line-clamp">{{ chart_product.title }}</a>
-                        {%- render 'price-list', product: chart_product, hide_unit_price: true -%}
-                      </div>
-
-                      {{- color_swatch -}}
-                    </div>
-
-                    {%- if section.settings.view_product != blank -%}
-                      <div class="feature-chart__view-button-container hidden justify-self-start md:block">
-                        {%- render 'button', href: chart_product.url, content: section.settings.view_product, background: product_column.settings.view_button_background, text_color: product_column.settings.view_button_text_color, subdued: true -%}
-                      </div>
-                    {%- endif -%}
-                  </div>
-                </div>
+      {%- for block in values_blocks -%}
+        {%- assign product = block.settings.product -%}
+        <div class="comparison-cell comparison-header" style="grid-column: {{ forloop.index | plus: 1 }}; grid-row: 1;">
+          {%- if section.settings.show_product_image -%}
+            <div class="product-image-wrapper">
+              {%- if product.featured_media -%}
+                {{- product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', sizes: '300px', widths: '300,400,600' -}}
               {%- else -%}
-                <div class="feature-chart__product">
-                  {%- if section.settings.show_product_image -%}
-                    <div>
-                      {%- capture product_placeholder -%}{% cycle 'product-apparel-1', 'product-apparel-2', 'product-apparel-3' %}{%- endcapture -%}
-                      {{- product_placeholder | placeholder_svg_tag: 'feature-chart__product-placeholder' -}}
-                    </div>
-                  {%- endif -%}
-
-                  {%- if section.settings.show_product_info -%}
-                    <div class="v-stack gap-5">
-                      <div class="v-stack gap-2">
-                        <div class="v-stack sm:gap-0.5">
-                          <span class="bold line-clamp">{{ 'general.on_boarding.product_title' | t }}</span>
-                        </div>
-                      </div>
-                    </div>
-                  {%- endif -%}
-                </div>
+                 {{ 'product-1' | placeholder_svg_tag }}
               {%- endif -%}
-            {%- endfor -%}
-          {%- endcapture -%}
-
-          {%- if section.settings.show_product_info or section.settings.show_product_image -%}
-            <div class="feature-chart__table-row feature-chart__table-row--product">
-              {{- product_row -}}
             </div>
-
-            {%- if total_rows_count > 6 -%}
-              <div class="feature-chart__table-row feature-chart__table-row--product feature-chart__table-row--sticky">
-                {{- product_row -}}
-              </div>
-            {%- endif -%}
           {%- endif -%}
-
-          {%- for i in (1..20) -%}
-            {%- assign heading_key = 'heading_' | append: i -%}
-            {%- assign value_key = 'value_' | append: i -%}
-
-            {%- assign heading_value = headings_block.settings[heading_key] -%}
-
-            {%- comment -%}We only output the line if at least one value is defined{%- endcomment -%}
-            {%- if heading_value != blank and values_blocks[0].settings[value_key] != blank or values_blocks[1].settings[value_key] != blank or values_blocks[2].settings[value_key] != blank -%}
-              <div class="feature-chart__table-row" {% if outputted_count >= section.settings.max_rows %}hidden{% else %}{% endif %}>
-                {%- if heading_value != blank -%}
-                  <div class="feature-chart__heading bold" {% if outputted_count == 0 %}{{ headings_block.shopify_attributes }}{% endif %}>{{ heading_value }}</div>
-                {%- endif -%}
-
-                {%- for i in (0..2) -%}
-                  {%- if values_blocks[i] != blank -%}
-                    {%- assign value = values_blocks[i].settings[value_key] -%}
-                    {%- assign stripped_value = value | strip_html | strip -%}
-
-                    <div class="feature-chart__value prose text-subdued" {% if outputted_count == 0 %}{{ values_blocks[i].shopify_attributes }}{% endif %}>
-                      {%- if stripped_value == 'FALSE' -%}
-                        <svg fill="none" class="icon offset-icon" width="16" height="16" viewBox="0 0 16 16" style="--icon-height: 16px">
-                          <path d="m.94 3.06 12 12 2.12-2.12-12-12L.94 3.06Zm2.12 12 12-12L12.94.94l-12 12 2.12 2.12Z" fill="{{ section.settings.chart_true_false_color | default: section.settings.chart_text_color | default: settings.text_color }}"></path>
-                        </svg>
-                      {%- elsif stripped_value == 'TRUE' -%}
-                        <svg fill="none" class="icon offset-icon" width="20" height="16" viewBox="0 0 20 16" style="--icon-height: 16px">
-                          <path d="m2 7.6 5.259 5.6L18 2" stroke="{{ section.settings.chart_true_false_color | default: section.settings.chart_text_color | default: settings.text_color }}" stroke-width="3"></path>
-                        </svg>
-                      {%- else -%}
-                        {{- value | default: '—' -}}
-                      {%- endif -%}
-                    </div>
-                  {%- endif -%}
-                {%- endfor -%}
-              </div>
-
-              {%- assign outputted_count = outputted_count | plus: 1 -%}
-            {%- endif -%}
-          {%- endfor -%}
+          <div class="product-title">{{- product.title | default: 'Product Title' -}}</div>
         </div>
+      {%- endfor -%}
 
-        {%- if outputted_count > section.settings.max_rows -%}
-          <div class="feature-chart__toggle">
-            <button data-action="toggle-rows" data-view-more="{{ section.settings.view_all_text | escape }}" data-view-less="{{ section.settings.view_less_text | escape }}" class="text-with-icon group">
-              <span class="feature-chart__toggle-text reversed-link">{{- section.settings.view_all_text | escape -}}</span>
-              <span class="circle-chevron group-hover:colors">{%- render 'icon' with 'chevron-bottom-small' -%}</span>
-            </button>
+
+      {%- comment -%} 
+        ROWS 2..21: FEATURES 
+      {%- endcomment -%}
+      {%- assign headings_block = section.blocks | where: 'type', 'headings' | first -%}
+      
+      {%- assign row_index_offset = 2 -%}
+      <!-- Start with visual_row counter at 2 (1 is header) -->
+      {%- assign current_grid_row = 2 -%}
+      
+      {%- for i in (1..20) -%}
+        {%- assign heading_key = 'heading_' | append: i -%}
+        {%- assign value_key = 'value_' | append: i -%}
+        
+        {%- assign heading_value = headings_block.settings[heading_key] -%}
+        
+        {%- comment -%} Check if row has any content to display {%- endcomment -%}
+        {%- assign has_content = false -%}
+        {%- if heading_value != blank -%}{%- assign has_content = true -%}{%- endif -%}
+        {%- unless has_content -%}
+          {%- for block in values_blocks -%}
+            {%- if block.settings[value_key] != blank -%}{%- assign has_content = true -%}{%- break -%}{%- endif -%}
+          {%- endfor -%}
+        {%- endunless -%}
+
+        {%- if has_content -%}
+          {%- comment -%} LABEL COLUMN {%- endcomment -%}
+          <div class="comparison-cell comparison-cell--label" style="grid-column: 1; grid-row: {{ current_grid_row }};">
+            {{- heading_value -}}
           </div>
+
+          {%- comment -%} VALUE COLUMNS {%- endcomment -%}
+          {%- for block in values_blocks -%}
+             <div class="comparison-cell comparison-cell--value" style="grid-column: {{ forloop.index | plus: 1 }}; grid-row: {{ current_grid_row }};">
+                {%- assign value = block.settings[value_key] -%}
+                {%- assign stripped_value = value | strip_html | strip -%}
+                
+                {%- if stripped_value == 'FALSE' or stripped_value == 'False' -%}
+                  <svg fill="none" class="icon icon-cross" width="24" height="24" viewBox="0 0 24 24">
+                     <circle cx="12" cy="12" r="10" stroke-width="2" fill="none"/>
+                     <path d="M15 9L9 15M9 9L15 15" stroke-width="2" stroke-linecap="round"/>
+                   </svg>
+                {%- elsif stripped_value == 'TRUE' or stripped_value == 'True' -%}
+                   <svg fill="none" class="icon icon-check" width="24" height="24" viewBox="0 0 24 24">
+                     <circle cx="12" cy="12" r="10" stroke-width="2" fill="none"/>
+                     <path d="M8 12L11 15L16 9" stroke-width="2" stroke-linecap="round"/>
+                   </svg>
+                {%- else -%}
+                  <div class="prose text-subdued">{{- value | default: '—' -}}</div>
+                {%- endif -%}
+             </div>
+          {%- endfor -%}
+          
+          {%- assign current_grid_row = current_grid_row | plus: 1 -%}
         {%- endif -%}
-      </feature-chart>
+      {%- endfor -%}
+
+      {%- comment -%} 
+        FOOTER ROW 
+      {%- endcomment -%}
+      {%- for block in values_blocks -%}
+        {%- assign product = block.settings.product -%}
+        <div class="comparison-cell comparison-footer" style="grid-column: {{ forloop.index | plus: 1 }}; grid-row: {{ current_grid_row }};">
+           <div class="price-display">
+             {%- if product.compare_at_price > product.price -%}
+               <span class="price-sale">{{ product.price | money }}</span>
+               <span class="price-compare">{{ product.compare_at_price | money }}</span>
+             {%- else -%}
+               <span class="price-sale">{{ product.price | money }}</span>
+             {%- endif -%}
+           </div>
+           
+           {%- assign button_text = section.settings.view_product | default: 'Buy Now' -%}
+           <!-- Check for block specific button text if schema supported it, but we use defaults -->
+           
+           <a href="{{ product.url }}" class="buy-button">
+             {{- button_text -}}
+           </a>
+        </div>
+      {%- endfor -%}
+
     </div>
   </div>
 </div>
@@ -262,13 +334,13 @@ LIQUID
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Compare"
+      "default": "A QUICK GUIDE TO HELP YOU CHOOSE THE RIGHT ONE"
     },
     {
       "type": "text",
       "id": "title",
       "label": "Heading",
-      "default": "Product comparison"
+      "default": "Which Bento to Pick?"
     },
     {
       "type": "richtext",
@@ -300,37 +372,17 @@ LIQUID
           "label": "Center"
         }
       ],
-      "default": "start"
+      "default": "center"
     },
     {
       "type": "header",
       "content": "Chart"
     },
     {
-      "type": "range",
-      "id": "max_rows",
-      "min": 1,
-      "max": 20,
-      "label": "Rows revealed by default",
-      "default": 5
-    },
-    {
-      "type": "text",
-      "id": "view_all_text",
-      "label": "View all text",
-      "default": "View all"
-    },
-    {
-      "type": "text",
-      "id": "view_less_text",
-      "label": "View less text",
-      "default": "View less"
-    },
-    {
       "type": "text",
       "id": "view_product",
       "label": "View product button text",
-      "default": "View"
+      "default": "Buy Now"
     },
     {
       "type": "checkbox",
@@ -345,18 +397,6 @@ LIQUID
       "default": true
     },
     {
-      "type": "checkbox",
-      "id": "show_product_swatch",
-      "label": "Show product swatch",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "viewing_product",
-      "label": "Currently viewing product label",
-      "info": "Badge added on the product page's main product. For best results, ensure that the product image is visible."
-    },
-    {
       "type": "header",
       "content": "Colors",
       "info": "Gradient replaces solid colors when set."
@@ -364,7 +404,8 @@ LIQUID
     {
       "type": "color",
       "id": "background",
-      "label": "Background"
+      "label": "Section Background",
+      "default": "#fffdf7"
     },
     {
       "type": "color_background",
@@ -389,17 +430,20 @@ LIQUID
     {
       "type": "color",
       "id": "button_background",
-      "label": "Button background"
+      "label": "Button background",
+      "default": "#d4e157"
     },
     {
       "type": "color",
       "id": "button_text_color",
-      "label": "Button text"
+      "label": "Button text",
+      "default": "#000000"
     },
     {
       "type": "color",
       "id": "chart_background",
-      "label": "Chart background"
+      "label": "Card background",
+      "default": "#ffffff"
     },
     {
       "type": "color",
@@ -660,33 +704,14 @@ LIQUID
         {
           "type": "headings",
           "settings": {
-            "heading_1": "Heading 1",
-            "heading_2": "Heading 2",
-            "heading_3": "Heading 3"
+            "heading_1": "Feature 1",
+            "heading_2": "Feature 2"
           }
         },
         {
           "type": "values",
           "settings": {
-            "value_1": "<p>Value 1</p>",
-            "value_2": "<p>Value 2</p>",
-            "value_3": "<p>Value 3</p>"
-          }
-        },
-        {
-          "type": "values",
-          "settings": {
-            "value_1": "<p>Value 1</p>",
-            "value_2": "<p>Value 2</p>",
-            "value_3": "<p>Value 3</p>"
-          }
-        },
-        {
-          "type": "values",
-          "settings": {
-            "value_1": "<p>Value 1</p>",
-            "value_2": "<p>Value 2</p>",
-            "value_3": "<p>Value 3</p>"
+            "value_1": "<p>Value 1</p>"
           }
         }
       ]
