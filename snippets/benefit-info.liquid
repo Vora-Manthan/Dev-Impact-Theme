@@ -1,0 +1,20 @@
+<div class="benefit-info">
+  {%- for i in (1..3) -%}
+    {%- capture icon_key -%}icon_{{ i }}{%- endcapture -%}
+    {%- capture text_key -%}icon_text_{{ i }}{%- endcapture -%}
+    {%- assign icon = block.settings[icon_key] -%}
+    {%- assign text = block.settings[text_key] -%}
+
+    {%- if icon != blank or text != blank -%}
+      <div class="benefit-info__inner">
+        {%- if icon != blank -%}
+          {{ icon | image_url: width: icon.width | image_tag: class: 'icon_image', loading: 'lazy', alt: text | escape }}
+        {%- endif -%}
+
+        {%- if text != blank -%}
+          <div class="benefit-info__content">{{ text }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+</div>

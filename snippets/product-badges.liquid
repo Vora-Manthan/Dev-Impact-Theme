@@ -28,7 +28,7 @@ Supported variables
         {%- assign custom_badges = product.metafields.custom.badges.value -%}
 
         {%- for custom_badge in custom_badges -%}
-          <span class="badge badge--primary" style="background: {{ custom_badge.bg_color }}; border: 1px solid {{ custom_badge.border_color }};">{{ custom_badge.title }}</span>
+          <span class="badge badge--primary" style="background: {{ custom_badge.bg_color }}; border: 1px solid {{ custom_badge.border_color }};--badge-color: {{ custom_badge.text_text_color}}">{{ custom_badge.title }}</span>
         {%- endfor -%}
 
       {%- when 'sold_out' -%}

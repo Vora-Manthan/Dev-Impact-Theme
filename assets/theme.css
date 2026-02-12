@@ -10192,3 +10192,134 @@ shopify-accelerated-checkout, shopify-accelerated-checkout-cart {
   display: -webkit-box;
   overflow: hidden;
 }
+
+/* BADGES */
+
+[data-block-type=rating] {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 0;
+  font-size: 14px;
+}
+[data-block-type=rating] .product-info__rating .rating{
+  border-radius: 32px;
+  background: var(--White, #FFF);
+  padding: 8px;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  gap: 4px;
+  
+}
+.rating__stars .icon-rating-star{
+  width: 14px;
+  height: 14px;
+}
+.benefit-info {
+  display: flex;
+  padding: 12px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  align-self: stretch;
+  border-radius: 16px;
+  border: 1px solid var(--Light-Yellow, #F8EA8B);
+  background: var(--White, #FFF);
+}
+.benefit-info__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex: 1 0 0;
+}
+.product-info__title h2{
+  color: var(--Elderberry, #1A332E);
+  font-family: Parkinsans;
+  font-size: 48px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 50px;
+}
+.product-info__description {
+  color: var(--Grey, #545555);
+  font-family: Parkinsans;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.benefit-info__content{
+  color: var(--Elderberry, #1A332E);
+  text-align: center;
+  font-family: Parkinsans;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.benefit-info__inner:not(:last-child){
+  border-right: 1px solid #F8EA8B;
+}
+
+.choose-your-color {
+  padding: 4px;
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  width: fit-content;
+}
+.choose-your-color img{
+  border-radius: 12px;
+  padding: 4px;
+}
+.choose-your-color.active img{
+  border: 1px solid var(--Elderberry, #1A332E);
+}
+[data-block-type="choose-your-color"]{
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  margin-top: 0;
+  font-size: 14px;
+  flex-direction: column;
+}
+[data-block-type="choose-your-color"] .choose-your-color_wrapper{
+  display: flex;
+  gap: 0px;
+  align-items: flex-start;
+  margin-top: 0;
+  font-size: 14px;
+}
+span.choose-your-color_sold-out {
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  transform: translate(50%, -50%);
+  display: flex;
+  width: max-content;
+  padding: 5px 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  border-radius: 100px;
+  border: 1px solid var(--Giggle-Pink, #FF66C4);
+  background: var(--White, #FFF);
+  color: var(--Elderberry, #1A332E);
+  text-align: center;
+  font-family: Parkinsans;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 12px;
+}
+.choose-your-color_image {
+  position: relative;
+}

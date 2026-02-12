@@ -51,21 +51,21 @@ Supported variables
       <span class="sr-only">{{ 'product.price.sale_price' | t }}</span>
 
       {%- if settings.currency_code_enabled -%}
-        {{- variant.price | money_with_currency | replace: ',', '' -}}
+        {{- variant.price | money_with_currency | replace: ',', '' | replace: 'Rs. ', '₹' -}}
       {%- else -%}
-        {{- variant.price | money | replace: ',', '' -}}
+        {{- variant.price | money | replace: ',', '' | replace: 'Rs. ', '₹' -}}
       {%- endif -%}
     </sale-price>
 
     {%- if variant.compare_at_price > variant.price -%}
-      <compare-at-price>MRP</compare-at-price>
+      <compare-at-price hidden>MRP</compare-at-price>
       <compare-at-price class="{{ compare_at_price_classes }}">
         <span class="sr-only">{{ 'product.price.regular_price' | t }}</span>
 
         {%- if settings.currency_code_enabled -%}
-          {{- variant.compare_at_price | money_with_currency | replace: ',', '' -}}
+          {{- variant.compare_at_price | money_with_currency | replace: ',', '' | replace: 'Rs. ', '₹' -}}
         {%- else -%}
-          {{- variant.compare_at_price | money | replace: ',', '' -}}
+          {{- variant.compare_at_price | money | replace: ',', '' | replace: 'Rs. ', '₹' -}}
         {%- endif -%}
       </compare-at-price>
     {%- endif -%}
@@ -82,9 +82,9 @@ Supported variables
       <span class="sr-only">{{ 'product.price.sale_price' | t }}</span>
 
       {%- if settings.currency_code_enabled -%}
-        {{- line_item.final_line_price | money_with_currency | replace: ',', '' -}}
+        {{- line_item.final_line_price | money_with_currency | replace: ',', '' | replace: 'Rs. ', '₹' -}}
       {%- else -%}
-        {{- line_item.final_line_price | money | replace: ',', '' -}}
+        {{- line_item.final_line_price | money | replace: ',', '' | replace: 'Rs. ', '₹' -}}
       {%- endif -%}
 
       {% comment %}{%- if line_item.original_line_price > line_item.final_line_price -%}
@@ -103,9 +103,9 @@ Supported variables
         <compare-at-price>
           <span class="sr-only">{{ 'product.price.regular_price' | t }}</span>
           {%- if settings.currency_code_enabled -%}
-            {{- line_compare_price_final | money_with_currency | replace: ',', '' -}}
+            {{- line_compare_price_final | money_with_currency | replace: ',', '' | replace: 'Rs. ', '₹' -}}
           {%- else -%}
-            {{- line_compare_price_final | money | replace: ',', '' -}}
+            {{- line_compare_price_final | money | replace: ',', '' | replace: 'Rs. ', '₹' -}}
           {%- endif -%}
         </compare-at-price>
         
@@ -125,9 +125,9 @@ Supported variables
 
       {%- capture price_min -%}
         {%- if settings.currency_code_enabled -%}
-          {{- cheapest_variant.price | money_with_currency | replace: ',', '' -}}
+          {{- cheapest_variant.price | money_with_currency | replace: ',', '' | replace: 'Rs. ', '₹' -}}
         {%- else -%}
-          {{- cheapest_variant.price | money | replace: ',', '' -}}
+          {{- cheapest_variant.price | money | replace: ',', '' | replace: 'Rs. ', '₹' -}}
         {%- endif -%}
       {%- endcapture -%}
 
@@ -143,19 +143,19 @@ Supported variables
         <sale-price class="{{ regular_price_classes }}">
           <span class="sr-only">{{ 'product.price.sale_price' | t }}</span>
           {%- if settings.currency_code_enabled -%}
-            {{ first_available_variant.price | money_with_currency | replace: ',', '' -}}
+            {{ first_available_variant.price | money_with_currency | replace: ',', '' | replace: 'Rs. ', '₹' -}}
           {%- else -%}
-            {{ first_available_variant.price | money | replace: ',', '' -}}
+            {{ first_available_variant.price | money | replace: ',', '' | replace: 'Rs. ', '₹' -}}
           {%- endif -%}
         </sale-price>
 
         <compare-at-price class="{{ compare_at_price_classes }}">
           <span class="sr-only">{{ 'product.price.regular_price' | t }}</span>
-          MRP
+          {% comment %} MRP {% endcomment %}
           {%- if settings.currency_code_enabled -%}
-            {{- cheapest_variant.compare_at_price | money_with_currency | replace: ',', '' -}}
+            {{- cheapest_variant.compare_at_price | money_with_currency | replace: ',', '' | replace: 'Rs. ', '₹' -}}
           {%- else -%}
-            {{- cheapest_variant.compare_at_price | money | replace: ',', '' -}}
+            {{- cheapest_variant.compare_at_price | money | replace: ',', '' | replace: 'Rs. ', '₹' -}}
           {%- endif -%}
         </compare-at-price>
         {%- assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round | append: '%' -%}
@@ -177,14 +177,14 @@ Supported variables
         {%- endif -%}
       </sale-price>
 
-      <compare-at-price class="text-subdued">MRP</compare-at-price>
+      <compare-at-price class="text-subdued" hidden>MRP</compare-at-price>
       <compare-at-price class="{{ compare_at_price_classes }}">
         <span class="sr-only">{{ 'product.price.regular_price' | t }}</span>
 
         {%- if settings.currency_code_enabled -%}
-          {{- product.compare_at_price | money_with_currency | replace: ',', '' -}}
+          {{- product.compare_at_price | money_with_currency | replace: ',', '' | replace: 'Rs. ', '₹' -}}
         {%- else -%}
-          {{- product.compare_at_price | money | replace: ',', '' -}}
+          {{- product.compare_at_price | money | replace: ',', '' | replace: 'Rs. ', '₹' -}}
         {%- endif -%}
       </compare-at-price>
       {%- assign savings = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round | append: '%' -%}

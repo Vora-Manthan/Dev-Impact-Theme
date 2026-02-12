@@ -91,7 +91,10 @@ Supported variables
           {%- endif -%}
 
         {%- when 'badges' -%}
-          {%- render 'product-badges', product: product, context: 'product', types: 'custom', class: 'product-info__badge-list' -%}
+          
+          {%- if block.settings.badges != blank -%}
+            {%- render 'product-badges', product: product, context: 'product', types: 'custom', class: 'product-info__badge-list' -%}
+          {%- endif -%}
 
         {%- when 'sku' -%}
           {% if product.selected_or_first_available_variant.sku != blank %}
@@ -116,9 +119,11 @@ Supported variables
               {%- if block.settings.show_taxes_notice -%}
                 <p class="text-sm text-subdued">
                   {%- if cart.taxes_included -%}
-                    {{ 'product.general.taxes_included' | t }}
+                    {% comment %} {{ 'product.general.taxes_included' | t }} {% endcomment %}
+                      Inc. all taxes
                   {%- else -%}
-                    {{ 'product.general.taxes_excluded' | t }}
+                    {% comment %} {{ 'product.general.taxes_excluded' | t }} {% endcomment %}
+                      Inc. all taxes
                   {%- endif -%}
 
                   {%- if shop.shipping_policy.body != blank -%}
@@ -137,7 +142,9 @@ Supported variables
               {%- render 'product-rating', product: product, show_empty: block.settings.show_empty, block: block -%}
             </div>
           {%- endif -%}
-
+          {%- if previous_block.type == 'badges' -%}
+            {%- render 'product-badges', product: product, context: 'product', types: 'custom', class: 'product-info__badge-list' -%}
+          {%- endif -%}
         {%- when 'payment_terms' -%}
           <payment-terms class="product-info__payment-terms">
             {%- capture product_installment_form_id -%}{{ product_form_id }}-product-installment-form{%- endcapture -%}
@@ -415,7 +422,10 @@ Supported variables
           {%- if block.settings.title != blank or block.settings.content != blank -%}
             {%- render 'offer', block: block -%}
           {%- endif -%}
-
+        {%- when 'benefit_info' -%}  
+          {%- render 'benefit-info', block: block -%}
+        {%- when 'choose_your_color' -%}  
+          {%- render 'choose-your-color', block: block -%}
         {%- when 'share_buttons' -%}
           <div class="product-form__share justify-items-{{ block.settings.alignment | replace: 'left', 'start' | replace: 'right', 'end' }}">
             <div class="product-info__share-buttons">
