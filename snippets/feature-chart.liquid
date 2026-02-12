@@ -1,0 +1,42 @@
+<div class="feature-chart">
+  {%- for i in (1..4) -%}
+    {%- capture icon_key -%}icon_{{ i }}{%- endcapture -%}
+    {%- capture text_key -%}text_{{ i }}{%- endcapture -%}
+    {%- assign icon = block.settings[icon_key] -%}
+    {%- assign text = block.settings[text_key] -%}
+
+    {%- if icon != blank or text != blank -%}
+      <div class="feature-chart__item">
+        {%- if icon != blank -%}
+          {%- capture image_style -%}max-width: {{ block.settings.icon_width }}px; height: auto;{%- endcapture -%}
+          {{ icon | image_url: width: icon.width | image_tag: style: image_style, loading: 'lazy', alt: text | escape }}
+        {%- endif -%}
+
+        {%- if text != blank -%}
+          <div class="feature-chart__content rte">{{ text }}</div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+
+<style>
+  .feature-chart {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 0;
+    text-align: center;
+  }
+  .feature-chart__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    flex: 1;
+  }
+  .feature-chart__content p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+</style>

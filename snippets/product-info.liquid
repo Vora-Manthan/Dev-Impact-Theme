@@ -449,6 +449,8 @@ Supported variables
           {%- render 'benefit-info', block: block -%}
         {%- when 'choose_your_color' -%}  
           {%- render 'choose-your-color', block: block -%}
+        {%- when 'feature_chart' -%}
+          {%- render 'feature-chart', block: block -%}
         {%- when 'delivery_estimation' -%}
           {%- render 'delivery-estimation', block: block -%}
         {%- when 'share_buttons' -%}
@@ -477,8 +479,14 @@ Supported variables
 
     {%- if allow_block_group and inside_block_group_context == false -%}
       {%- assign inside_block_group_context = true -%}
+      {% if block.type == 'offer' %}
+        <span class="product-info__offer">
+          <b>Available offers</b>
+        </span>
+      {% endif %}
       <div class="product-info__block-group {{ block_group_class }}" data-group-type="{{ block_group_name }}">
     {%- endif -%}
+    
 
     <div class="product-info__block-item" data-block-id="{{ block.id }}" data-block-type="{{ block.type | replace: '_', '-' }}" {% unless block.type == '@app' or block.type == 'accordion' %}{{ block.shopify_attributes }}{% endunless %}>
       {{- block_content -}}

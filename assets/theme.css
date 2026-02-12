@@ -10330,6 +10330,7 @@ span.choose-your-color_sold-out {
   gap: 12px;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  margin-top: 10px;
 }
 
 .product-info__block-group.product-info__offer-list::-webkit-scrollbar {
@@ -10363,4 +10364,9 @@ span.choose-your-color_sold-out {
 [data-block-type="title"]{
   display: flex;
   justify-content: space-between;
+}
+@media screen and (max-width: 425px){
+  .header__wrapper{
+    padding: 14px 20px;
+  }
 }

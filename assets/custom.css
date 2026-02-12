@@ -226,3 +226,11 @@ section.slide-show-new .slideshow .slideshow__carousel .desktop-white-img {
 .delivery-estimation__error {
   color: #ff0000;
 }
+
+/* Horizontal Product Success Icon */
+.horizontal-product__success-icon {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  height: 100%;
+}
