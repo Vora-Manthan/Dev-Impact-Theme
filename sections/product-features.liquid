@@ -1,3 +1,178 @@
+{%- if product.metafields.custom.product_feature.value != blank -%}
+<style>
+  .product-features-section {
+    background-color: {{ section.settings.section_bg }};
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    font-family: var(--font-body-family);
+  }
+
+  .product-features-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+  }
+
+  .pf-header {
+    margin-bottom: 40px;
+  }
+
+  .pf-heading {
+    font-size: 3rem;
+    color: {{ section.settings.heading_color }};
+    margin: 0 0 10px 0;
+    font-weight: 700;
+    font-family: 'DM Serif Display', serif;
+  }
+
+  .pf-subheading {
+    display: block;
+    margin-top: 10px;
+    text-transform: uppercase;
+    color: {{ section.settings.subheading_color }};
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+
+  .pf-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+
+  .pf-card {
+    background-color: {{ section.settings.card_bg }};
+    border-radius: 15px;
+    overflow: hidden;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+    height: 100%;
+  }
+
+  .pf-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .pf-image-wrapper {
+    width: 100%;
+    aspect-ratio: 1 / 1; 
+    overflow: hidden;
+    background-color: #e5e5e5;
+    position: relative;
+  }
+
+  .pf-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .pf-content {
+    padding: 20px;
+    flex-grow: 1;
+    color: {{ section.settings.card_text_color }};
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pf-card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: inherit;
+  }
+
+  .pf-card-text {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #555;
+  }
+  
+  .pf-card-text p {
+    margin: 0;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .pf-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .pf-grid {
+      display: flex;
+      gap: 15px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding-bottom: 20px;
+      -webkit-overflow-scrolling: touch; /* smooth scrolling for iOS */
+     /* Hide scrollbar for Chrome, Safari and Opera */
+    }
+    .pf-grid::-webkit-scrollbar {
+        display: none;
+    }
+    /* Hide scrollbar for IE, Edge and Firefox */
+    .pf-grid { 
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+    }
+    
+    .pf-card {
+      /* Card width should be around 85% to show the next card peering */
+      flex: 0 0 85%; 
+      scroll-snap-align: center;
+    }
+    
+    .pf-heading {
+      font-size: 2.2rem;
+    }
+  }
+</style>
+
+<div class="product-features-section">
+  <div class="product-features-container">
+    <div class="pf-header">
+      {% if section.settings.heading != blank %}
+        <h2 class="pf-heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <span class="pf-subheading">{{ section.settings.subheading }}</span>
+      {% endif %}
+    </div>
+
+    <div class="pf-grid">
+      {%- assign features = product.metafields.custom.product_feature.value -%}
+      {%- for feature in features limit: 4 -%}
+        <div class="pf-card">
+          <div class="pf-image-wrapper">
+             {%- if feature.image != blank -%}
+                {{ feature.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: feature.image.alt | default: feature.caption }}
+             {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+             {%- endif -%}
+          </div>
+          <div class="pf-content">
+            {%- if feature.caption != blank -%}
+              <div class="pf-card-title">{{ feature.caption }}</div>
+            {%- endif -%}
+            {%- if feature.discription != blank -%}
+              <div class="pf-card-text">{{ feature.discription }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Product Features",
@@ -77,245 +252,10 @@
       "default": 60
     }
   ],
-  "blocks": [
-    {
-      "type": "feature",
-      "name": "Feature Card",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "html",
-          "id": "custom_icon",
-          "label": "Custom Icon (SVG/HTML)",
-          "info": "Use this for SVG code. Overrides Image."
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Feature Title"
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Description",
-          "default": "<p>Write a short description about this feature.</p>"
-        }
-      ]
-    }
-  ],
   "presets": [
     {
-      "name": "Product Features",
-      "blocks": [
-        {
-          "type": "feature",
-          "settings": {
-              "title": "No Spills, Just Zen",
-              "text": "<p>No spills, only peace - lunch the Japanese way.</p>"
-          }
-        },
-        {
-          "type": "feature",
-           "settings": {
-              "title": "Japan Edition",
-              "text": "<p>From Kyoto skies to your lunch, Japan's beauty in steel.</p>"
-          }
-        },
-        {
-          "type": "feature",
-           "settings": {
-              "title": "Steel Like Samurai",
-              "text": "<p>304 stainless steel, food safe and toxin free.</p>"
-          }
-        },
-        {
-          "type": "feature",
-           "settings": {
-              "title": "Detachable Mini Box",
-              "text": "<p>Detachable snack box; from chutneys to mochi, pack it all.</p>"
-          }
-        }
-      ]
+      "name": "Product Features"
     }
   ]
 }
 {% endschema %}
-
-<style>
-  .product-features-section {
-    background-color: {{ section.settings.section_bg }};
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
-    font-family: var(--font-body-family); /* Or fallback to sans-serif */
-  }
-
-  .product-features-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    text-align: center;
-  }
-
-  .pf-header {
-    margin-bottom: 40px;
-  }
-
-  .pf-heading {
-    font-size: 3rem; /* Approximating the large size */
-    color: {{ section.settings.heading_color }};
-    margin: 0 0 10px 0;
-    font-weight: 700;
-    font-family: 'DM Serif Display', serif; /* Trying to match the serif style if available, otherwise fallback */
-  }
-
-  .pf-subheading {
-    display: block;
-    margin-top: 10px;
-    text-transform: uppercase;
-    color: {{ section.settings.subheading_color }};
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    font-weight: 500;
-  }
-
-  .pf-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-  }
-
-  .pf-card {
-    background-color: {{ section.settings.card_bg }};
-    border-radius: 15px;
-    overflow: hidden;
-    text-align: left;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Subtle shadow like in the image */
-    transition: transform 0.3s ease;
-    height: 100%;
-  }
-
-  .pf-card:hover {
-    transform: translateY(-5px);
-  }
-
-  .pf-image-wrapper {
-    width: 100%;
-    /* Aspect ratio placeholder or fixed height to match image */
-    aspect-ratio: 1 / 1; 
-    overflow: hidden;
-    background-color: #e5e5e5; /* Placeholder color */
-    position: relative;
-  }
-
-  .pf-image-wrapper img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .pf-custom-icon {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: transparent; 
-  }
-  
-  .pf-custom-icon svg {
-    width: 60%;
-    height: 60%;
-    object-fit: contain;
-  }
-
-  .pf-content {
-    padding: 20px;
-    flex-grow: 1;
-    color: {{ section.settings.card_text_color }};
-    display: flex;
-    flex-direction: column;
-  }
-
-  .pf-card-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-    color: inherit;
-  }
-
-  .pf-card-text {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: #555; /* Slightly softer text for description */
-  }
-  
-  .pf-card-text p {
-    margin: 0;
-  }
-
-  /* Responsive Design */
-  @media (max-width: 1024px) {
-    .pf-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 600px) {
-    .pf-grid {
-      grid-template-columns: 1fr;
-    }
-    
-    .pf-heading {
-      font-size: 2.2rem;
-    }
-  }
-</style>
-
-<div class="product-features-section">
-  <div class="product-features-container">
-    <div class="pf-header">
-      {% if section.settings.heading != blank %}
-        <h2 class="pf-heading">{{ section.settings.heading }}</h2>
-      {% endif %}
-      {% if section.settings.subheading != blank %}
-        <span class="pf-subheading">{{ section.settings.subheading }}</span>
-      {% endif %}
-    </div>
-
-    <div class="pf-grid">
-      {% for block in section.blocks %}
-        <div class="pf-card" {{ block.shopify_attributes }}>
-          <div class="pf-image-wrapper">
-          <div class="pf-image-wrapper">
-             {% if block.settings.custom_icon != blank %}
-                <div class="pf-custom-icon">
-                  {{ block.settings.custom_icon }}
-                </div>
-             {% elsif block.settings.image != blank %}
-                {{ block.settings.image | image_url: width: 800 | image_tag: loading: 'lazy', alt: block.settings.image.alt }}
-             {% else %}
-                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-             {% endif %}
-          </div>
-          </div>
-          <div class="pf-content">
-            {% if block.settings.title != blank %}
-              <div class="pf-card-title">{{ block.settings.title }}</div>
-            {% endif %}
-            {% if block.settings.text != blank %}
-              <div class="pf-card-text">{{ block.settings.text }}</div>
-            {% endif %}
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-</div>

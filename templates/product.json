@@ -89,11 +89,11 @@
           "settings": {
             "icon_width": 40,
             "icon_1": "shopify://shop_images/Group_2147205248.svg",
-            "text_1": "<p>FDA</p><p>Approved</p>",
+            "text_1": "<p>FDA</p><p>Approved<br/><br/></p>",
             "icon_2": "shopify://shop_images/shield-01.svg",
-            "text_2": "<p>6 Months</p><p>Warranty</p>",
+            "text_2": "<p>6 Months</p><p>Warranty<br/><br/><br/><br/></p>",
             "icon_3": "shopify://shop_images/shipping-truck-01.svg",
-            "text_3": "<p>Free</p><p>Shipping</p>",
+            "text_3": "<p>Free</p><p>Shipping<br/><br/></p>",
             "icon_4": "shopify://shop_images/plant-02.svg",
             "text_4": "<p>Toxin</p><p>Free</p>"
           }
@@ -183,46 +183,6 @@
     },
     "product_features_6wEtQA": {
       "type": "product-features",
-      "blocks": {
-        "feature_rz7AEr": {
-          "type": "feature",
-          "settings": {
-            "custom_icon": "",
-            "title": "No Spills, Just Zen",
-            "text": "<p>No spills, only peace - lunch the Japanese way.</p>"
-          }
-        },
-        "feature_xNxFQB": {
-          "type": "feature",
-          "settings": {
-            "custom_icon": "",
-            "title": "Japan Edition",
-            "text": "<p>From Kyoto skies to your lunch, Japan's beauty in steel.</p>"
-          }
-        },
-        "feature_pjYhij": {
-          "type": "feature",
-          "settings": {
-            "custom_icon": "",
-            "title": "Steel Like Samurai",
-            "text": "<p>304 stainless steel, food safe and toxin free.</p>"
-          }
-        },
-        "feature_ktLngq": {
-          "type": "feature",
-          "settings": {
-            "custom_icon": "",
-            "title": "Detachable Mini Box",
-            "text": "<p>Detachable snack box; from chutneys to mochi, pack it all.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "feature_rz7AEr",
-        "feature_xNxFQB",
-        "feature_pjYhij",
-        "feature_ktLngq"
-      ],
       "name": "Product Features",
       "settings": {
         "section_bg": "#fdfde0",
@@ -385,20 +345,21 @@
           "type": "details_tab_specs",
           "settings": {
             "title": "Dimensions",
-            "col2_title": "Containers",
-            "feature_label_1": "Small Container",
-            "feature_value_1": "170 ml (~3/4th cup)",
-            "feature_label_2": "Mid Container",
-            "feature_value_2": "250 ml (1 cup)",
-            "feature_label_3": "Large Container",
-            "feature_value_3": "490 ml (~ 2 cups)",
-            "col3_title": "Specifications",
-            "spec_label_1": "Product Dimensions",
-            "spec_value_1": "23 cm X 17 cm X 5 cm",
-            "spec_label_2": "Weight",
-            "spec_value_2": "400 Grams",
-            "spec_label_3": "Capacity",
-            "spec_value_3": "1000 ml"
+            "image": "{{ product.metafields.custom.product_dimensions.value.product_image.value }}",
+            "col2_title": "Containers{{ product.metafields.custom.product_dimensions.value.column_title.value }}",
+            "feature_label_1": "Small Container{{ product.metafields.custom.product_dimensions.value.feature_1_label.value }}",
+            "feature_value_1": "170 ml (~3/4th cup){{ product.metafields.custom.product_dimensions.value.feature_1_value.value }}",
+            "feature_label_2": "Mid Container{{ product.metafields.custom.product_dimensions.value.feature_2_label.value }}",
+            "feature_value_2": "250 ml (1 cup){{ product.metafields.custom.product_dimensions.value.feature_2_value.value }}",
+            "feature_label_3": "Large Container{{ product.metafields.custom.product_dimensions.value.feature_3_label.value }}",
+            "feature_value_3": "490 ml (~ 2 cups){{ product.metafields.custom.product_dimensions.value.feature_3_value.value }}",
+            "col3_title": "Specifications{{ product.metafields.custom.product_dimensions.value.column_two_title.value }}",
+            "spec_label_1": "Product Dimensions{{ product.metafields.custom.product_dimensions.value.spec_1_label.value }}",
+            "spec_value_1": "23 cm X 17 cm X 5 cm{{ product.metafields.custom.product_dimensions.value.spec_1_value.value }}",
+            "spec_label_2": "Weight{{ product.metafields.custom.product_dimensions.value.feature_2_label.value }}",
+            "spec_value_2": "400 Grams{{ product.metafields.custom.product_dimensions.value.feature_2_value.value }}",
+            "spec_label_3": "Capacity{{ product.metafields.custom.product_dimensions.value.spec_3_label.value }}",
+            "spec_value_3": "1000 ml{{ product.metafields.custom.product_dimensions.value.feature_3_value.value }}"
           }
         },
         "details_tab_text_qEjjPR": {
