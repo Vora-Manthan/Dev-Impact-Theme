@@ -166,52 +166,262 @@
         "input_text_color": ""
       }
     },
-    "tabs_if8zHw": {
-      "type": "tabs",
+    "product_features_6wEtQA": {
+      "type": "product-features",
       "blocks": {
-        "tab_fe8TPM": {
-          "type": "tab",
+        "feature_rz7AEr": {
+          "type": "feature",
           "settings": {
-            "title": "Tab 1",
-            "content": "<p>Use this text to share information about your brand with your customers.</p>",
-            "page": ""
+            "custom_icon": "",
+            "title": "No Spills, Just Zen",
+            "text": "<p>No spills, only peace - lunch the Japanese way.</p>"
           }
         },
-        "tab_TexYKd": {
-          "type": "tab",
+        "feature_xNxFQB": {
+          "type": "feature",
           "settings": {
-            "title": "Tab 2",
-            "content": "<p>Describe a product, share announcements, or welcome customers to your store.</p>",
-            "page": ""
+            "custom_icon": "",
+            "title": "Japan Edition",
+            "text": "<p>From Kyoto skies to your lunch, Japan's beauty in steel.</p>"
           }
         },
-        "tab_jyJzNj": {
-          "type": "tab",
+        "feature_pjYhij": {
+          "type": "feature",
           "settings": {
-            "title": "Tab 3",
-            "content": "<p>Share information about your shipping rates, return policy or contact information.</p>",
-            "page": ""
+            "custom_icon": "",
+            "title": "Steel Like Samurai",
+            "text": "<p>304 stainless steel, food safe and toxin free.</p>"
+          }
+        },
+        "feature_ktLngq": {
+          "type": "feature",
+          "settings": {
+            "custom_icon": "",
+            "title": "Detachable Mini Box",
+            "text": "<p>Detachable snack box; from chutneys to mochi, pack it all.</p>"
           }
         }
       },
       "block_order": [
-        "tab_fe8TPM",
-        "tab_TexYKd",
-        "tab_jyJzNj"
+        "feature_rz7AEr",
+        "feature_xNxFQB",
+        "feature_pjYhij",
+        "feature_ktLngq"
       ],
-      "name": "Tabs",
+      "name": "Product Features",
+      "settings": {
+        "section_bg": "#fdfde0",
+        "heading_color": "#1a2e1a",
+        "subheading_color": "#4a4a4a",
+        "card_bg": "#ffffff",
+        "card_text_color": "#1a2e1a",
+        "heading": "Product Features",
+        "subheading": "ANYTHING BUT ORDINARY!",
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "certifications_xEQV3j": {
+      "type": "certifications",
+      "blocks": {
+        "cert_item_ewDYdm": {
+          "type": "cert_item",
+          "settings": {
+            "custom_icon": "",
+            "text": "<p>FDA Approved</p>"
+          }
+        },
+        "cert_item_XKFFwq": {
+          "type": "cert_item",
+          "settings": {
+            "custom_icon": "",
+            "text": "<p>IP Patented</p>"
+          }
+        },
+        "cert_item_AVyBK8": {
+          "type": "cert_item",
+          "settings": {
+            "custom_icon": "",
+            "text": "<p>Child Safety Certificate</p>"
+          }
+        }
+      },
+      "block_order": [
+        "cert_item_ewDYdm",
+        "cert_item_XKFFwq",
+        "cert_item_AVyBK8"
+      ],
+      "name": "Certifications",
+      "settings": {
+        "section_bg": "#fdfde0",
+        "show_wave": true,
+        "layout_style": "grid",
+        "heading": "Globally Tested",
+        "subheading": "100% Free from Harmful Toxins",
+        "button_label": "VIEW ALL CERTIFICATIONS",
+        "button_link": ""
+      }
+    },
+    "testimonials_zmzK9V": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_NHLFMt": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "John S.",
+            "title": "Testimonial 1",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        },
+        "testimonial_FjxqQT": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 5,
+            "author": "Mary U.",
+            "title": "Testimonial 2",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        },
+        "testimonial_ebTRtx": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "Joshua A.",
+            "title": "Testimonial 3",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_NHLFMt",
+        "testimonial_FjxqQT",
+        "testimonial_ebTRtx"
+      ],
+      "name": "Testimonials",
       "settings": {
         "full_width": true,
-        "content_size": "medium",
-        "subheading": "Subheading",
-        "title": "Heading",
-        "text_alignment": "center",
-        "first_tab_open": false,
+        "stack_testimonials": true,
+        "subheading": "",
+        "title": "Testimonials",
+        "content": "",
+        "link_url": "",
+        "link_text": "",
         "background": "",
         "background_gradient": "",
         "text_color": "",
         "heading_color": "",
-        "heading_gradient": ""
+        "heading_gradient": "",
+        "testimonial_card_background": "",
+        "testimonial_card_text_color": ""
+      }
+    },
+    "certifications_jz4BHF": {
+      "type": "certifications",
+      "blocks": {
+        "cert_item_n7Bkbd": {
+          "type": "cert_item",
+          "settings": {
+            "custom_icon": "",
+            "text": "<p>FDA Approved</p>"
+          }
+        },
+        "cert_item_wYnPPC": {
+          "type": "cert_item",
+          "settings": {
+            "custom_icon": "",
+            "text": "<p>IP Patented</p>"
+          }
+        },
+        "cert_item_7QLhPd": {
+          "type": "cert_item",
+          "settings": {
+            "custom_icon": "",
+            "text": "<p>Child Safety Certificate</p>"
+          }
+        }
+      },
+      "block_order": [
+        "cert_item_n7Bkbd",
+        "cert_item_wYnPPC",
+        "cert_item_7QLhPd"
+      ],
+      "name": "Certifications",
+      "settings": {
+        "section_bg": "#fdfde0",
+        "show_wave": true,
+        "layout_style": "grid",
+        "heading": "Globally Tested",
+        "subheading": "100% Free from Harmful Toxins",
+        "button_label": "VIEW ALL CERTIFICATIONS",
+        "button_link": ""
+      }
+    },
+    "product_details_tabs_dfdf4A": {
+      "type": "product-details-tabs",
+      "blocks": {
+        "details_tab_specs_6RYaQP": {
+          "type": "details_tab_specs",
+          "settings": {
+            "title": "Dimensions",
+            "col2_title": "Containers",
+            "feature_label_1": "Small Container",
+            "feature_value_1": "170 ml (~3/4th cup)",
+            "feature_label_2": "Mid Container",
+            "feature_value_2": "250 ml (1 cup)",
+            "feature_label_3": "Large Container",
+            "feature_value_3": "490 ml (~ 2 cups)",
+            "col3_title": "Specifications",
+            "spec_label_1": "Product Dimensions",
+            "spec_value_1": "23 cm X 17 cm X 5 cm",
+            "spec_label_2": "Weight",
+            "spec_value_2": "400 Grams",
+            "spec_label_3": "Capacity",
+            "spec_value_3": "1000 ml"
+          }
+        },
+        "details_tab_text_qEjjPR": {
+          "type": "details_tab_text",
+          "settings": {
+            "title": "Materials",
+            "content": "<p>Add additional details about materials, care instructions, or warranty here.</p>"
+          }
+        },
+        "details_tab_text_aK9q8K": {
+          "type": "details_tab_text",
+          "settings": {
+            "title": "Care Instructions",
+            "content": "<p>Add additional details about materials, care instructions, or warranty here.</p>"
+          }
+        },
+        "details_tab_text_eNtMUq": {
+          "type": "details_tab_text",
+          "settings": {
+            "title": "More Informationn",
+            "content": "<p>Add additional details about materials, care instructions, or warranty here.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "details_tab_specs_6RYaQP",
+        "details_tab_text_qEjjPR",
+        "details_tab_text_aK9q8K",
+        "details_tab_text_eNtMUq"
+      ],
+      "name": "Product Details Tabs",
+      "settings": {
+        "title": "The Details That Matter",
+        "subheading": "MADE THOUGHTFULLY, EXPLAINED SIMPLY",
+        "background": "#fffdf7",
+        "card_background": "#ffffff",
+        "accent_color": "#fdd835",
+        "text_color": "#1c1c1c"
       }
     },
     "comparison_table_eBUGXX": {
@@ -342,14 +552,9 @@
         "button_text": "",
         "button_url": "",
         "text_position": "start",
-        "max_rows": 5,
-        "view_all_text": "View all",
-        "view_less_text": "View less",
-        "view_product": "View",
+        "view_product": "Buy Now",
         "show_product_info": true,
         "show_product_image": true,
-        "show_product_swatch": true,
-        "viewing_product": "",
         "background": "",
         "background_gradient": "",
         "text_color": "",
@@ -413,6 +618,66 @@
         "button_text_color": "",
         "accordion_background": "",
         "accordion_text_color": ""
+      }
+    },
+    "testimonials_3bfUTN": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_tnkmCq": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "John S.",
+            "title": "Testimonial 1",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        },
+        "testimonial_y7hnw4": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 5,
+            "author": "Mary U.",
+            "title": "Testimonial 2",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        },
+        "testimonial_nEgCNQ": {
+          "type": "testimonial",
+          "settings": {
+            "round_avatar": true,
+            "show_rating": true,
+            "rating": 4,
+            "author": "Joshua A.",
+            "title": "Testimonial 3",
+            "content": "<p>Share what your customers are saying about your products, customer service or shipping rates.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_tnkmCq",
+        "testimonial_y7hnw4",
+        "testimonial_nEgCNQ"
+      ],
+      "name": "Testimonials",
+      "settings": {
+        "full_width": true,
+        "stack_testimonials": true,
+        "subheading": "",
+        "title": "Testimonials",
+        "content": "",
+        "link_url": "",
+        "link_text": "",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "testimonial_card_background": "",
+        "testimonial_card_text_color": ""
       }
     },
     "featured_collection_dfpAhh": {
@@ -535,9 +800,14 @@
   },
   "order": [
     "main",
-    "tabs_if8zHw",
+    "product_features_6wEtQA",
+    "certifications_xEQV3j",
+    "testimonials_zmzK9V",
+    "certifications_jz4BHF",
+    "product_details_tabs_dfdf4A",
     "comparison_table_eBUGXX",
     "faq_Fnbq9x",
+    "testimonials_3bfUTN",
     "featured_collection_dfpAhh",
     "featured_collection_Mp7kQg",
     "slideshow_MGApir",

@@ -1,0 +1,550 @@
+{%- render 'section-spacing-collapsing' -%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    --details-bg-color: {{ section.settings.background | default: '#fffdf7' }};
+    --details-text-color: {{ section.settings.text_color | default: '#1c1c1c' }};
+    --details-accent-color: {{ section.settings.accent_color | default: '#fdd835' }};
+    --details-card-bg: {{ section.settings.card_background | default: '#ffffff' }};
+    --details-radius: 20px;
+  }
+
+  .details-section {
+    background-color: var(--details-bg-color);
+    color: var(--details-text-color);
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .details-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .details-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .details-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .details-header p {
+    font-size: 1rem;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* Tabs Navigation */
+  .details-tabs-nav {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .details-tab-btn {
+    background: #ffffff;
+    border: 1px solid #eee;
+    padding: 0.75rem 2rem;
+    border-radius: 99px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1rem;
+    min-width: 120px;
+  }
+
+  .details-tab-btn:hover {
+    border-color: var(--details-accent-color);
+  }
+
+  .details-tab-btn.active {
+    background-color: var(--details-accent-color);
+    border-color: var(--details-accent-color);
+    color: #000;
+    font-weight: 600;
+  }
+
+  /* Tab Content Area */
+  .details-content-wrapper {
+    background: var(--details-card-bg);
+    border-radius: var(--details-radius);
+    padding: 3rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    min-height: 400px;
+  }
+
+  .details-tab-panel {
+    display: none;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .details-tab-panel.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Dimensions Block Layout */
+  .dimensions-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.9fr 0.9fr;
+    gap: 3rem;
+    align-items: center;
+  }
+
+  /* Image Column */
+  .dimensions-image {
+    width: 100%;
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .dimensions-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* Lists Columns */
+  .dimensions-column h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+  }
+
+  .dimensions-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .dimensions-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+
+  /* Number Badge */
+  .feature-badge {
+    background: #fff9c4; /* Light yellow background */
+    color: #5e35b1; /* Purple text */
+    border: 1px solid #7e57c2;
+    min-width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+    margin-top: 3px;
+    box-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+  }
+
+  .feature-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .feature-label {
+    font-size: 0.95rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+  }
+
+  .feature-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #000;
+  }
+
+  /* Specifications List (Rightmost) */
+  .specs-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .specs-label {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .specs-value {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #000;
+  }
+
+  /* Rich Text Block Layout */
+  .richtext-content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.1rem;
+    line-height: 1.6;
+  }
+
+  @media screen and (max-width: 900px) {
+    .dimensions-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .dimensions-image {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .details-tab-btn {
+      width: 100%;
+      text-align: center;
+    }
+    .details-content-wrapper {
+      padding: 1.5rem;
+    }
+  }
+</style>
+
+<div class="details-section">
+  <div class="details-container">
+    <div class="details-header">
+      {%- if section.settings.title != blank -%}
+        <h2>{{ section.settings.title | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.subheading != blank -%}
+        <p>{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="details-tabs-nav" role="tablist">
+      {%- for block in section.blocks -%}
+        <button class="details-tab-btn {% if forloop.first %}active{% endif %}" 
+                role="tab" 
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-controls="panel-{{ block.id }}"
+                id="tab-{{ block.id }}"
+                onclick="openTab(event, 'panel-{{ block.id }}')">
+          {{ block.settings.title | escape }}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    <!-- Tab Content -->
+    <div class="details-content-wrapper">
+      {%- for block in section.blocks -%}
+        <div id="panel-{{ block.id }}" 
+             class="details-tab-panel {% if forloop.first %}active{% endif %}" 
+             role="tabpanel" 
+             aria-labelledby="tab-{{ block.id }}">
+          
+          {%- case block.type -%}
+            {%- when 'details_tab_specs' -%}
+              <!-- Dimensions / Specs Layout -->
+              <div class="dimensions-grid">
+                <!-- Image Column -->
+                <div class="dimensions-image">
+                  {%- if block.settings.image != blank -%}
+                    {{- block.settings.image | image_url: width: 600 | image_tag: loading: 'lazy', sizes: '(max-width: 700px) 100vw, 500px' -}}
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag }}
+                  {%- endif -%}
+                </div>
+                
+                <!-- Containers Column -->
+                <div class="dimensions-column">
+                  <h3>{{ block.settings.col2_title | default: 'Containers' }}</h3>
+                  <ul class="dimensions-list">
+                    {%- for i in (1..3) -%}
+                      {%- assign label_key = 'feature_label_' | append: i -%}
+                      {%- assign value_key = 'feature_value_' | append: i -%}
+                      {%- if block.settings[label_key] != blank or block.settings[value_key] != blank -%}
+                        <li class="dimensions-item">
+                          <span class="feature-badge">{{ i }}</span>
+                          <div class="feature-content">
+                            {%- if block.settings[label_key] != blank -%}
+                              <span class="feature-label">{{ block.settings[label_key] }}</span>
+                            {%- endif -%}
+                            {%- if block.settings[value_key] != blank -%}
+                              <span class="feature-value">{{ block.settings[value_key] }}</span>
+                            {%- endif -%}
+                          </div>
+                        </li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                </div>
+                
+                <!-- Specifications Column -->
+                <div class="dimensions-column">
+                  <h3>{{ block.settings.col3_title | default: 'Specifications' }}</h3>
+                  <ul class="dimensions-list">
+                     {%- for i in (1..3) -%}
+                      {%- assign label_key = 'spec_label_' | append: i -%}
+                      {%- assign value_key = 'spec_value_' | append: i -%}
+                      {%- if block.settings[label_key] != blank or block.settings[value_key] != blank -%}
+                        <li class="specs-item">
+                           {%- if block.settings[label_key] != blank -%}
+                              <span class="specs-label">{{ block.settings[label_key] }}</span>
+                           {%- endif -%}
+                           {%- if block.settings[value_key] != blank -%}
+                              <span class="specs-value">{{ block.settings[value_key] }}</span>
+                           {%- endif -%}
+                        </li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </div>
+
+            {%- when 'details_tab_text' -%}
+              <div class="richtext-content">
+                {{ block.settings.content }}
+              </div>
+          {%- endcase -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<script>
+  function openTab(evt, panelId) {
+    // Get all elements with class="details-tab-panel" and hide them
+    var tabcontent = document.getElementsByClassName("details-tab-panel");
+    for (var i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].classList.remove("active");
+    }
+
+    // Get all elements with class="details-tab-btn" and remove the class "active"
+    var tablinks = document.getElementsByClassName("details-tab-btn");
+    for (var i = 0; i < tablinks.length; i++) {
+        tablinks[i].classList.remove("active");
+        tablinks[i].setAttribute("aria-selected", "false");
+    }
+
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(panelId).classList.add("active");
+    evt.currentTarget.classList.add("active");
+    evt.currentTarget.setAttribute("aria-selected", "true");
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Product Details Tabs",
+  "tag": "section",
+  "class": "section-product-details-tabs",
+  "settings": [
+    {
+       "type": "text",
+       "id": "title",
+       "label": "Heading",
+       "default": "The Details That Matter"
+    },
+    {
+       "type": "text",
+       "id": "subheading",
+       "label": "Subheading",
+       "default": "MADE THOUGHTFULLY, EXPLAINED SIMPLY"
+    },
+    {
+       "type": "header",
+       "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Section Background",
+      "default": "#fffdf7"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Active Tab Color",
+      "default": "#fdd835"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#1c1c1c"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "details_tab_specs",
+      "name": "Dimensions Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Tab Label",
+          "default": "Dimensions"
+        },
+        {
+           "type": "image_picker",
+           "id": "image",
+           "label": "Product Image"
+        },
+        {
+           "type": "header",
+           "content": "Column 2 (Features)"
+        },
+        {
+           "type": "text",
+           "id": "col2_title",
+           "label": "Column Title",
+           "default": "Containers"
+        },
+        {
+           "type": "text",
+           "id": "feature_label_1",
+           "label": "Feature 1 Label",
+           "default": "Small Container"
+        },
+        {
+           "type": "text",
+           "id": "feature_value_1",
+           "label": "Feature 1 Value",
+           "default": "170 ml (~3/4th cup)"
+        },
+        {
+           "type": "text",
+           "id": "feature_label_2",
+           "label": "Feature 2 Label",
+           "default": "Mid Container"
+        },
+        {
+           "type": "text",
+           "id": "feature_value_2",
+           "label": "Feature 2 Value",
+           "default": "250 ml (1 cup)"
+        },
+        {
+           "type": "text",
+           "id": "feature_label_3",
+           "label": "Feature 3 Label",
+           "default": "Large Container"
+        },
+        {
+           "type": "text",
+           "id": "feature_value_3",
+           "label": "Feature 3 Value",
+           "default": "490 ml (~ 2 cups)"
+        },
+        {
+           "type": "header",
+           "content": "Column 3 (Specs)"
+        },
+        {
+           "type": "text",
+           "id": "col3_title",
+           "label": "Column Title",
+           "default": "Specifications"
+        },
+        {
+           "type": "text",
+           "id": "spec_label_1",
+           "label": "Spec 1 Label",
+           "default": "Product Dimensions"
+        },
+        {
+           "type": "text",
+           "id": "spec_value_1",
+           "label": "Spec 1 Value",
+           "default": "23 cm X 17 cm X 5 cm"
+        },
+        {
+           "type": "text",
+           "id": "spec_label_2",
+           "label": "Spec 2 Label",
+           "default": "Weight"
+        },
+        {
+           "type": "text",
+           "id": "spec_value_2",
+           "label": "Spec 2 Value",
+           "default": "400 Grams"
+        },
+        {
+           "type": "text",
+           "id": "spec_label_3",
+           "label": "Spec 3 Label",
+           "default": "Capacity"
+        },
+        {
+           "type": "text",
+           "id": "spec_value_3",
+           "label": "Spec 3 Value",
+           "default": "1000 ml"
+        }
+      ]
+    },
+    {
+       "type": "details_tab_text",
+       "name": "Text Content Tab",
+       "settings": [
+         {
+            "type": "text",
+            "id": "title",
+            "label": "Tab Label",
+            "default": "More Info"
+         },
+         {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Add additional details about materials, care instructions, or warranty here.</p>"
+         }
+       ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Details Tabs",
+      "blocks": [
+        {
+          "type": "details_tab_specs"
+        },
+        {
+          "type": "details_tab_text",
+          "settings": {
+            "title": "Materials"
+          }
+        },
+        {
+          "type": "details_tab_text",
+          "settings": {
+            "title": "Care Instructions"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
