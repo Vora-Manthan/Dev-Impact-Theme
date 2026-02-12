@@ -84,14 +84,18 @@
             "payment_button_text_color": ""
           }
         },
-        "associated_products_XmkBEm": {
-          "type": "associated_products",
+        "feature_chart_CmQfeV": {
+          "type": "feature_chart",
           "settings": {
-            "title": "Buy it with",
-            "stack_products": true,
-            "products_count": 5,
-            "background": "",
-            "text_color": ""
+            "icon_width": 40,
+            "icon_1": "shopify://shop_images/Group_2147205248.svg",
+            "text_1": "<p>FDA</p><p>Approved<br/><br/></p>",
+            "icon_2": "shopify://shop_images/shield-01.svg",
+            "text_2": "<p>6 Months</p><p>Warranty<br/><br/><br/><br/></p>",
+            "icon_3": "shopify://shop_images/shipping-truck-01.svg",
+            "text_3": "<p>Free</p><p>Shipping<br/><br/></p>",
+            "icon_4": "shopify://shop_images/plant-02.svg",
+            "text_4": "<p>Toxin</p><p>Free</p>"
           }
         },
         "offer_H7f37R": {
@@ -129,6 +133,16 @@
             "delivery_days": 5,
             "message": "Get it delivered by [date]"
           }
+        },
+        "associated_products_XmkBEm": {
+          "type": "associated_products",
+          "settings": {
+            "title": "Complete the Kit",
+            "stack_products": false,
+            "products_count": 2,
+            "background": "#ffffff",
+            "text_color": ""
+          }
         }
       },
       "block_order": [
@@ -143,10 +157,11 @@
         "payment_terms",
         "quantity_selector",
         "buy_buttons",
-        "associated_products_XmkBEm",
+        "feature_chart_CmQfeV",
         "offer_H7f37R",
         "offer_XQYUTf",
-        "delivery_estimation_UABHDW"
+        "delivery_estimation_UABHDW",
+        "associated_products_XmkBEm"
       ],
       "settings": {
         "full_width": true,
