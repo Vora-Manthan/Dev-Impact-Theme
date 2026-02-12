@@ -449,6 +449,8 @@ Supported variables
           {%- render 'benefit-info', block: block -%}
         {%- when 'choose_your_color' -%}  
           {%- render 'choose-your-color', block: block -%}
+        {%- when 'delivery_estimation' -%}
+          {%- render 'delivery-estimation', block: block -%}
         {%- when 'share_buttons' -%}
           {% if previous_block.type != 'title' %}
           <div class="product-form__share justify-items-{{ block.settings.alignment | replace: 'left', 'start' | replace: 'right', 'end' }}">

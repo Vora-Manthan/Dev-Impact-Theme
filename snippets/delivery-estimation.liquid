@@ -1,0 +1,21 @@
+{% comment %}
+  Delivery Estimation Snippet
+  Renders an input field and button for potential customers to check delivery availability and estimated date.
+{% endcomment %}
+
+<div class="delivery-estimation" data-delivery-days="{{ block.settings.delivery_days }}" data-message-format="{{ block.settings.message }}">
+  {% if block.settings.heading != blank %}
+    <h3 class="delivery-estimation__heading h6">{{ block.settings.heading }}</h3>
+  {% endif %}
+  
+  <div class="delivery-estimation__form">
+    <div class="delivery-estimation__input-wrapper">
+      <input type="text" class="delivery-estimation__input" placeholder="Enter Pincode" maxlength="6" pattern="\d*">
+      <button type="button" class="delivery-estimation__button">Check</button>
+    </div>
+  </div>
+  
+  <div class="delivery-estimation__result" style="display: none;">
+    <p class="delivery-estimation__message text-sm"></p>
+  </div>
+</div>

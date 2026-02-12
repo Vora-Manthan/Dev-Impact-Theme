@@ -83,6 +83,52 @@
             "payment_button_background": "",
             "payment_button_text_color": ""
           }
+        },
+        "associated_products_XmkBEm": {
+          "type": "associated_products",
+          "settings": {
+            "title": "Buy it with",
+            "stack_products": true,
+            "products_count": 5,
+            "background": "",
+            "text_color": ""
+          }
+        },
+        "offer_H7f37R": {
+          "type": "offer",
+          "settings": {
+            "text_alignment": "start",
+            "icon_position": "aligned",
+            "icon": "picto-coupon",
+            "custom_icon": "shopify://shop_images/Frame_2147225906.svg",
+            "icon_width": 20,
+            "title": "Get 10% Cashback upto ₹1500",
+            "content": "<p>with NO COST EMI powered by snapmint</p>",
+            "background": "#f8ea8b",
+            "text_color": "#1a332e"
+          }
+        },
+        "offer_XQYUTf": {
+          "type": "offer",
+          "settings": {
+            "text_alignment": "start",
+            "icon_position": "aligned",
+            "icon": "picto-coupon",
+            "custom_icon": "shopify://shop_images/Frame_2147225906.svg",
+            "icon_width": 20,
+            "title": "Get 10% Cashback upto ₹1500",
+            "content": "<p>with NO COST EMI powered by snapmint</p>",
+            "background": "#f8ea8b",
+            "text_color": "#1a332e"
+          }
+        },
+        "delivery_estimation_UABHDW": {
+          "type": "delivery_estimation",
+          "settings": {
+            "heading": "Estimated Delivery Date",
+            "delivery_days": 5,
+            "message": "Get it delivered by [date]"
+          }
         }
       },
       "block_order": [
@@ -96,7 +142,11 @@
         "choose_your_color_x4Amcy",
         "payment_terms",
         "quantity_selector",
-        "buy_buttons"
+        "buy_buttons",
+        "associated_products_XmkBEm",
+        "offer_H7f37R",
+        "offer_XQYUTf",
+        "delivery_estimation_UABHDW"
       ],
       "settings": {
         "full_width": true,
