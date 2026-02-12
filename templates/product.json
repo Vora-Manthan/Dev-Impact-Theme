@@ -737,6 +737,9 @@
       "block_order": [
         "image_Tk3JaF"
       ],
+      "custom_css": [
+        ".slideshow__carousel {margin-inline: 10px;}"
+      ],
       "name": "Slideshow",
       "settings": {
         "full_width": true,

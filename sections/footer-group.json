@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "name": "Footer group",
   "type": "footer",
@@ -7,30 +16,56 @@
       "blocks": {
         "brand": {
           "type": "brand_newsletter",
-          "settings": {}
+          "settings": {
+            "logo": "shopify://shop_images/Asset_1_2.svg",
+            "logo_width": 120,
+            "tagline": "Bold, Playful & Unapologetically Unique",
+            "newsletter_heading": "BECOME A BASIL INSIDER",
+            "newsletter_text": "Get first dibs on exclusive drops, secret offers, or genius hacks!"
+          }
         },
         "nav": {
           "type": "nav_socials",
-          "settings": {}
+          "settings": {
+            "menu_1_title": "SHOP",
+            "menu_1": "shop",
+            "menu_2_title": "MORE",
+            "menu_2": "more",
+            "social_title": "Find us here!"
+          }
         },
         "info": {
           "type": "info_marketplaces",
-          "settings": {}
+          "settings": {
+            "manufactured_title": "Manufactured By",
+            "manufactured_text": "<p>SY NO.26/1, K NO.1056,1037/1/1042/1, INDIQUE AURA, IBIS Hotel, Hongasandra village, Next to Oxford engineering college, Garvebhavi Palya, Bengaluru, Bengaluru Urban, Karnataka, 560068<br/>CIN U51909KA2022PTC164084</p>",
+            "available_title": "Now Available At:",
+            "market_1": "shopify://shop_images/Frame_2147205217.png",
+            "market_2": "shopify://shop_images/Frame_2147205216.png",
+            "market_3": "shopify://shop_images/Frame_2147205215.png",
+            "market_4": "shopify://shop_images/Frame_2147205214.png",
+            "market_5": "shopify://shop_images/Frame_2147205218.png"
+          }
         },
-        "bottom": {
+        "bottom_bar_4ejByp": {
           "type": "bottom_bar",
-          "settings": {}
+          "settings": {
+            "policies_menu": "policy",
+            "made_by_text": "Made with ❤️ by Boco"
+          }
         }
       },
       "block_order": [
         "brand",
         "nav",
         "info",
-        "bottom"
+        "bottom_bar_4ejByp"
       ],
       "settings": {
-        "bg_color": "#C8E147",
-        "text_color": "#000000"
+        "bg_color": "#c8e147",
+        "text_color": "#000000",
+        "padding_top": 45,
+        "padding_bottom": 40
       }
     }
   },
