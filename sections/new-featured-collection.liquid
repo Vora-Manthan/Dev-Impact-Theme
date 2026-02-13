@@ -1,0 +1,462 @@
+{% if section.settings.products != blank or section.settings.collection != blank %}
+  {%- render 'section-spacing-collapsing' -%}
+  
+  <style>
+    {%- assign section_background = section.settings.background | default: settings.background -%}
+    {%- assign card_background = section.settings.product_card_background | default: settings.product_card_background -%}
+    {%- assign card_blends = false -%}
+  
+    {%- unless section_background != 'rgba(0,0,0,0)' and card_background != 'rgba(0,0,0,0)' and section_background != card_background -%}
+      {%- assign card_blends = true -%}
+    {%- endunless -%}
+  
+    #shopify-section-{{ section.id }} .product-list {
+      --product-list-gap: {% if section.settings.stack_products and section.settings.products_per_row_mobile == '2' %}{% if card_blends %}var(--product-list-row-gap){% endif %} var(--spacing-2){% else %}var(--product-list-row-gap) var(--product-list-column-gap){% endif %};
+      --product-list-items-per-row: {{ section.settings.products_per_row_mobile | times: 1 }};
+      --product-list-carousel-item-width: 74vw;
+      --product-list-grid: {% if section.settings.stack_products %}auto / repeat(var(--product-list-items-per-row), minmax(0, 1fr)){% else %}auto / auto-flow var(--product-list-carousel-item-width){% endif %};
+    }
+  
+    @media screen and (min-width: 700px) {
+      #shopify-section-{{ section.id }} .product-list {
+        --product-list-gap: var(--product-list-row-gap) var(--product-list-column-gap);
+        --product-list-items-per-row: 2;
+        --product-list-carousel-item-width: 36vw;
+      }
+    }
+  
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .product-list {
+        --product-list-items-per-row: {{ section.settings.products_per_row_desktop }};
+        --product-list-carousel-item-width: calc(var(--container-inner-width) / {{ section.settings.products_per_row_desktop }} - (var(--product-list-column-gap) / {{ section.settings.products_per_row_desktop }} * {{ section.settings.products_per_row_desktop | plus: 0.8 }}));
+      }
+    }
+ 
+    #shopify-section-{{ section.id }} .link-to-coll {
+      margin: 24px 0 0;
+    }
+    #shopify-section-{{ section.id }} .link-to-coll > a {
+        padding: 16px 48px;
+        color: #006A54;
+        font-family: ObviouslyB !important;
+        font-size: 19px;
+        text-decoration: underline;
+        background: unset;
+        display: flex;
+        justify-content: center;
+    }
+    @media screen and (min-width: 1000px) {
+      #shopify-section-{{ section.id }} .link-to-coll {
+        margin: 32px 0 0;
+      }
+    }
+
+    {% if section.settings.products_per_row_mobile == '2' %}
+      @media screen and (max-width: 699px) {
+        #shopify-section-{{ section.id }} .product-card {
+          margin: 6px 0 0;
+        }
+        #shopify-section-{{ section.id }} .product-card__badge-list {
+          top: -6px;
+        }
+        #shopify-section-{{ section.id }} .badge {
+          padding: 4.5px 12px;
+          font-size: 11px;
+        }
+        #shopify-section-{{ section.id }} .product-card__info, #shopify-section-{{ section.id }} .atc-btn-boco button {
+          padding: 8px;
+        }
+        #shopify-section-{{ section.id }} .custom-badges-tpd {
+          min-height: 13px;
+        }
+        #shopify-section-{{ section.id }} .custom-badges-tpd .badge {
+          font-size: 6px;
+        }
+        #shopify-section-{{ section.id }} .new-v-stack {
+          margin: -8px 0 0;
+        }
+        #shopify-section-{{ section.id }} .new-rwt .bold, #shopify-section-{{ section.id }} sale-price, #shopify-section-{{ section.id }} .atc-btn-boco div {
+          font-size: 13px !important;
+        }
+        #shopify-section-{{ section.id }} .shortcription, #shopify-section-{{ section.id }} .rating .text-sm, #shopify-section-{{ section.id }} .per-discount {
+          font-size: 8px;
+          margin: unset;
+        }
+      }
+    {% endif %}
+
+    .big-d.top, .big-d.bottom {
+      width: 100%;
+      rotate: 180deg;
+    }
+    .big-d.top {
+        bottom: -1px;
+        position: relative;
+    }
+    .custom-color .section.section-blends.section-full {
+        background: #F193A3;
+        padding: 0 80px;
+    }
+    .custom-color img.w-img.des {
+        width: -webkit-fill-available;
+    }
+    .custom-color img.w-img.des {
+        margin: 0;
+        max-width: max-content;
+    }
+    .custom-color .custom-badges-tpd {
+       display: none !important;
+    }
+    .big-d.bottom {
+        position: relative;
+        top: -1px;
+    }
+    .top-images {
+    z-index: 1;
+    position: relative;
+}
+img.w-img-fav, img.w-img-favi, img.w-img-first, img.w-img-second {
+    rotate: 180deg;
+}
+.fav-one {
+    position: absolute;
+    top: 0;
+    right: 24%;
+}
+.fav-two {
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 10%;
+}
+.fav-four {
+    z-index: 2;
+    position: absolute;
+    top: 26px;
+    left: 5%;
+}
+.fav-three {
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    right: 15%;
+}
+  </style>
+  <div class="big-d top">
+      <div class="top-images">
+         <img class="w-img des" src="https://cdn.shopify.com/s/files/1/0782/5388/3681/files/Loop_7f0975b8-7154-462b-a952-13e290030945.png">
+        {% comment %} <img class="w-img mob" src="https://cdn.shopify.com/s/files/1/0782/5388/3681/files/Frame_2147205259_d3db6b84-b7ad-45b5-9318-85b32fc210b2.svg"> {% endcomment %}
+      </div>
+      <div class="fav-one">
+         <img class="w-img-favi" src="https://cdn.shopify.com/s/files/1/0962/4820/1499/files/Layer_1_d0b110b7-c041-4d20-a431-bbfbba30b322.svg?v=1770998593">
+        {% comment %} <img class="w-img mob" src="https://cdn.shopify.com/s/files/1/0782/5388/3681/files/Frame_2147205259_d3db6b84-b7ad-45b5-9318-85b32fc210b2.svg"> {% endcomment %}
+      </div>
+      <div class="fav-two">
+         <img class="w-img-fav" src="https://cdn.shopify.com/s/files/1/0962/4820/1499/files/Layer_2.svg?v=1770998594">
+        {% comment %} <img class="w-img mob" src="https://cdn.shopify.com/s/files/1/0782/5388/3681/files/Frame_2147205259_d3db6b84-b7ad-45b5-9318-85b32fc210b2.svg"> {% endcomment %}
+      </div>
+    </div>
+  <div {% render 'section-properties' %}>
+    
+    <div class="section-stack">
+      {%- assign link_url = section.settings.link_url | default: section.settings.collection.url -%}
+      {%- render 'section-header', subheading: section.settings.subheading, heading: section.settings.title, heading_color: section.settings.heading_color, heading_gradient: section.settings.heading_gradient, content: section.settings.content -%}
+  
+      <div class="page-width">
+    <h2 class="multicolor-heading">
+      <span class="part-1">{{ section.settings.part_1 }}</span>
+      <span class="part-2">{{ section.settings.part_2 }}</span>
+      <span class="part-3">{{ section.settings.part_3 }}</span>
+    </h2>
+
+    {% if section.settings.subtext != blank %}
+      <div class="multicolor-subtext">
+        {{ section.settings.subtext }}
+      </div>
+    {% endif %}
+  </div>
+
+      <div class="{% if section.settings.show_progress_bar %}scrollable-with-controls{% else %}floating-controls-container{% endif %}">
+        {%- assign scroll_area_id = 'scroll-area-' | append: section.id -%}
+  
+        <scroll-carousel selector="product-card" id="{{ scroll_area_id }}" class="scroll-area bleed {% if section.settings.products_count > section.settings.products_per_row_desktop %}is-scrollable{% endif %}">
+          <reveal-items selector=".product-list > *">
+            <product-list class="product-list">
+              {%- assign products = section.settings.products | default: section.settings.collection.products -%}
+  
+              {%- for product in products limit: section.settings.products_count -%}
+                {%- render 'product-card', product: product, stacked: section.settings.stack_products, position: forloop.index, background: section.settings.product_card_background, text_color: section.settings.product_card_text_color, show_badges: true -%}
+              {%- else -%}
+                {%- for i in (1..section.settings.products_count) -%}
+                  {%- capture placeholder_image -%}product-{% cycle '1', '2', '3', '4', '5', '6' %}{%- endcapture -%}
+                  {%- render 'product-card-placeholder', stacked: section.settings.stack_products, placeholder_image: placeholder_image, background: section.settings.product_card_background, text_color: section.settings.product_card_text_color, text_alignment: settings.product_info_alignment -%}
+                {%- endfor -%}
+              {%- endfor -%}
+            </product-list>
+          </reveal-items>
+        </scroll-carousel>
+  
+        {%- if section.settings.stack_products == false -%}
+          {%- if section.settings.show_progress_bar -%}
+            {%- assign default_progress = section.settings.products_per_row_desktop | times: 1.0 | divided_by: section.settings.products_count -%}
+            {%- render 'scrollbar', observes: scroll_area_id, default_progress: default_progress, show_buttons: true -%}
+          {%- else -%}
+            {% comment %}
+            <button is="prev-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ scroll_area_id }}" disabled>
+              <span class="sr-only">{{ 'general.accessibility.previous' | t }}</span>
+              <span class="animated-arrow animated-arrow--reverse"></span>
+            </button>
+  
+            <button is="next-button" class="circle-button circle-button--lg circle-button--fill border group" aria-controls="{{ scroll_area_id }}">
+              <span class="sr-only">{{ 'general.accessibility.next' | t }}</span>
+              <span class="animated-arrow"></span>
+            </button>
+            {% endcomment %}
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    </div>
+    
+
+    {% if section.settings.link_text != blank %}
+      <div class="link-to-coll">
+        <a href="{{ link_url }}">{{ section.settings.link_text }}</a>
+      </div>
+    {% endif %}
+
+  </div>
+  <div class="big-d bottom">
+      <div class="top-images">
+        <img class="w-img des" src="https://cdn.shopify.com/s/files/1/0782/5388/3681/files/Frame_2147205199_d86aea5b-46fe-46ca-ba8a-16af9cc2cc70.png">
+        {% comment %} <img class="w-img mob" src="https://cdn.shopify.com/s/files/1/0782/5388/3681/files/Loop_1972a2e1-3ff5-4e74-8f8d-1da88e5ad2fd.svg"> {% endcomment %}
+      </div>
+      <div class="fav-three">
+         <img class="w-img-first" src="https://cdn.shopify.com/s/files/1/0962/4820/1499/files/Unicon_4.svg?v=1770998593">
+        {% comment %} <img class="w-img mob" src="https://cdn.shopify.com/s/files/1/0782/5388/3681/files/Frame_2147205259_d3db6b84-b7ad-45b5-9318-85b32fc210b2.svg"> {% endcomment %}
+      </div>
+      <div class="fav-four">
+         <img class="w-img-second" src="https://cdn.shopify.com/s/files/1/0962/4820/1499/files/Layer_3.svg?v=1770998593">
+        {% comment %} <img class="w-img mob" src="https://cdn.shopify.com/s/files/1/0782/5388/3681/files/Frame_2147205259_d3db6b84-b7ad-45b5-9318-85b32fc210b2.svg"> {% endcomment %}
+      </div>
+    </div>
+{% endif %}
+
+<style>
+
+.multicolor-heading {
+  font-size: 40px;
+    font-weight: 600 !important;
+    line-height: 1.2;
+    margin: 0;
+    text-align: center;
+    font-family: Parkinsans;
+}
+
+.part-1 {
+  color: {{ section.settings.color_1 }};
+}
+
+.part-2 {
+  color: {{ section.settings.color_2 }};
+}
+
+.part-3 {
+  color: {{ section.settings.color_3 }};
+}
+
+.multicolor-subtext {
+  margin-top: 20px;
+  font-size: 18px;
+  color: {{ section.settings.subtext_color }};
+  {% comment %} max-width: 800px; {% endcomment %}
+  margin-left: auto;
+  margin-right: auto;
+  font-family: Parkinsans;
+}
+</style>
+
+{% schema %}
+{
+  "name": "New Featured collection",
+  "class": "shopify-section--featured-collection custom-color",
+  "tag": "section",
+  "disabled_on": {
+    "templates": ["password"],
+    "groups": ["header", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Products",
+      "info": "Replaces collection when selected."
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "stack_products",
+      "label": "Stack products",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress_bar",
+      "label": "Show carousel progress bar",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "products_count",
+      "min": 2,
+      "max": 50,
+      "label": "Products to show",
+      "default": 6
+    },
+    {
+      "type": "select",
+      "id": "products_per_row_mobile",
+      "label": "Products per row (mobile)",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "min": 2,
+      "max": 5,
+      "label": "Products per row (desktop)",
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "part_1",
+      "label": "Heading Part 1",
+      "default": "Meet "
+    },
+    {
+      "type": "text",
+      "id": "part_2",
+      "label": "Heading Part 2 (Highlight)",
+      "default": "PixieDash "
+    },
+    {
+      "type": "text",
+      "id": "part_3",
+      "label": "Heading Part 3",
+      "default": "the Keeper of Colors!"
+    },
+    {
+      "type": "color",
+      "id": "color_1",
+      "label": "Color Part 1",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "color_2",
+      "label": "Color Part 2",
+      "default": "#FFD966"
+    },
+    {
+      "type": "color",
+      "id": "color_3",
+      "label": "Color Part 3",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "richtext",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "<p>Each morning, with a swirl of its magic potion, PixieDash paints the world anew.</p>"
+    },
+    {
+      "type": "color",
+      "id": "subtext_color",
+      "label": "Subtext Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#E85CA8"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Link URL",
+      "info": "Default to collection URL."
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "View all"
+    },
+    {
+      "type": "header",
+      "content": "Colors",
+      "info": "Gradient replaces solid colors when set."
+    },
+    {
+      "type": "color",
+      "id": "background",
+      "label": "Background"
+    },
+    {
+      "type": "color_background",
+      "id": "background_gradient",
+      "label": "Background gradient"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color"
+    },
+    {
+      "type": "color_background",
+      "id": "heading_gradient",
+      "label": "Heading gradient"
+    },
+    {
+      "type": "color",
+      "id": "product_card_background",
+      "label": "Product card background"
+    },
+    {
+      "type": "color",
+      "id": "product_card_text_color",
+      "label": "Product card text"
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Featured collection"
+    }
+  ]
+}
+{% endschema %}

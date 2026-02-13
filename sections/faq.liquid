@@ -75,13 +75,48 @@
         max-height: 30px;
     }
   }
+            /* Wavy Background Elements */
+  .wave-top, .wave-bottom {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .wave-top {
+    top: -1px; /* Overlap slightly to prevent gaps */
+    transform: rotate(180deg);
+  }
+
+  .wave-bottom {
+    bottom: -1px;
+    transform: rotate(180deg);
+  }
+
+  .wave-svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 60px; /* Adjust height of wave */
+  }
+
+  .wave-svg path {
+    fill: #ffffff; /* Page background color */
+  }
+
 </style>
 
 <div {% render 'section-properties' %}>
   {%- if section.settings.show_waves -%}
-    <div class="faq-wave faq-wave--top">
-      <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
+    <div class="faq-wave faq-wave--top wave-top">
+      {% comment %} <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
         <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="{{ section.settings.wave_color }}"></path>
+      </svg> {% endcomment %}
+      <svg class="wave-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 71" preserveAspectRatio="none">
+        <path d="M0 500.899C0 500.899 303.947 477.24 720 500.899C720 500.899 1299.28 533.856 1440 500.899V37.0659C1299.28 70.0224 720 20.0464 720 20.0464C303.5 -33.4537 0 37.0659 0 37.0659V500.899Z" fill="{{ section.settings.wave_color }}"/>
       </svg>
     </div>
   {%- endif -%}
@@ -122,9 +157,9 @@
   </div>
 
   {%- if section.settings.show_waves -%}
-    <div class="faq-wave faq-wave--bottom">
-      <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z" fill="{{ section.settings.wave_color }}"></path>
+    <div class="faq-wave faq-wave--bottom wave-bottom">
+     <svg class="wave-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 71" preserveAspectRatio="none">
+        <path d="M1440 -430.353C1440 -430.353 1136.05 -406.694 720 -430.353C720 -430.353 140.722 -463.309 0 -430.353V33.4805C140.722 0.523956 720 50.5 720 50.5C1136.5 104 1440 33.4805 1440 33.4805V-430.353Z" fill="#F8EA8B"/>
       </svg>
     </div>
   {%- endif -%}
