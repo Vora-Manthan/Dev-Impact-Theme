@@ -565,7 +565,8 @@ Supported variables
             </script>
           {% endif %}
         
-        
+        {%- when 'custom_badges' -%}
+          {%- render 'custom_badges', block: block -%}
         {%- when 'personalisation' -%}
           {%- render 'personalisation', block: block -%}
         {%- when 'benefit_info' -%}  
