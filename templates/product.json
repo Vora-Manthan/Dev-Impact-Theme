@@ -202,22 +202,25 @@
         "cert_item_ewDYdm": {
           "type": "cert_item",
           "settings": {
+            "image": "{{ product.metafields.custom.certification_details.value.certification_one.value }}",
             "custom_icon": "",
-            "text": "<p>FDA Approved</p>"
+            "text": "<p>{{ product.metafields.custom.certification_details.value.certification_name.value }}</p>"
           }
         },
         "cert_item_XKFFwq": {
           "type": "cert_item",
           "settings": {
+            "image": "{{ product.metafields.custom.certification_details.value.certification_two.value }}",
             "custom_icon": "",
-            "text": "<p>IP Patented</p>"
+            "text": "<p>{{ product.metafields.custom.certification_details.value.certification_two_name.value }}</p>"
           }
         },
         "cert_item_AVyBK8": {
           "type": "cert_item",
           "settings": {
+            "image": "{{ product.metafields.custom.certification_details.value.certification_three.value }}",
             "custom_icon": "",
-            "text": "<p>Child Safety Certificate</p>"
+            "text": "<p>{{ product.metafields.custom.certification_details.value.certification_three_name.value }}</p>"
           }
         }
       },
@@ -303,22 +306,25 @@
         "cert_item_n7Bkbd": {
           "type": "cert_item",
           "settings": {
+            "image": "{{ product.metafields.custom.designed_in_india.value.main_image.value }}",
             "custom_icon": "",
-            "text": "<p>FDA Approved</p>"
+            "text": ""
           }
         },
         "cert_item_wYnPPC": {
           "type": "cert_item",
           "settings": {
+            "image": "{{ product.metafields.custom.designed_in_india.value.country_image.value }}",
             "custom_icon": "",
-            "text": "<p>IP Patented</p>"
+            "text": "<p>{{ product.metafields.custom.designed_in_india.value.country_name.value }}</p>"
           }
         },
         "cert_item_7QLhPd": {
           "type": "cert_item",
           "settings": {
+            "image": "{{ product.metafields.custom.designed_in_india.value.patents_image.value }}",
             "custom_icon": "",
-            "text": "<p>Child Safety Certificate</p>"
+            "text": "<p>{{ product.metafields.custom.designed_in_india.value.patents_name.value }}</p>"
           }
         }
       },
@@ -331,10 +337,10 @@
       "settings": {
         "section_bg": "#fdfde0",
         "show_wave": true,
-        "layout_style": "grid",
+        "layout_style": "highlight",
         "heading": "Globally Tested",
         "subheading": "100% Free from Harmful Toxins",
-        "button_label": "VIEW ALL CERTIFICATIONS",
+        "button_label": "",
         "button_link": ""
       }
     },
@@ -346,41 +352,41 @@
           "settings": {
             "title": "Dimensions",
             "image": "{{ product.metafields.custom.product_dimensions.value.product_image.value }}",
-            "col2_title": "Containers{{ product.metafields.custom.product_dimensions.value.column_title.value }}",
-            "feature_label_1": "Small Container{{ product.metafields.custom.product_dimensions.value.feature_1_label.value }}",
-            "feature_value_1": "170 ml (~3/4th cup){{ product.metafields.custom.product_dimensions.value.feature_1_value.value }}",
-            "feature_label_2": "Mid Container{{ product.metafields.custom.product_dimensions.value.feature_2_label.value }}",
-            "feature_value_2": "250 ml (1 cup){{ product.metafields.custom.product_dimensions.value.feature_2_value.value }}",
-            "feature_label_3": "Large Container{{ product.metafields.custom.product_dimensions.value.feature_3_label.value }}",
-            "feature_value_3": "490 ml (~ 2 cups){{ product.metafields.custom.product_dimensions.value.feature_3_value.value }}",
-            "col3_title": "Specifications{{ product.metafields.custom.product_dimensions.value.column_two_title.value }}",
+            "col2_title": "{{ product.metafields.custom.product_dimensions.value.column_title.value }}",
+            "feature_label_1": "{{ product.metafields.custom.product_dimensions.value.feature_1_label.value }}",
+            "feature_value_1": "{{ product.metafields.custom.product_dimensions.value.feature_1_value.value }}",
+            "feature_label_2": "{{ product.metafields.custom.product_dimensions.value.feature_2_label.value }}",
+            "feature_value_2": "{{ product.metafields.custom.product_dimensions.value.feature_2_value.value }}",
+            "feature_label_3": "{{ product.metafields.custom.product_dimensions.value.feature_3_label.value }}",
+            "feature_value_3": "{{ product.metafields.custom.product_dimensions.value.feature_3_value.value }}",
+            "col3_title": "{{ product.metafields.custom.product_dimensions.value.column_two_title.value }}",
             "spec_label_1": "Product Dimensions{{ product.metafields.custom.product_dimensions.value.spec_1_label.value }}",
-            "spec_value_1": "23 cm X 17 cm X 5 cm{{ product.metafields.custom.product_dimensions.value.spec_1_value.value }}",
-            "spec_label_2": "Weight{{ product.metafields.custom.product_dimensions.value.feature_2_label.value }}",
-            "spec_value_2": "400 Grams{{ product.metafields.custom.product_dimensions.value.feature_2_value.value }}",
-            "spec_label_3": "Capacity{{ product.metafields.custom.product_dimensions.value.spec_3_label.value }}",
-            "spec_value_3": "1000 ml{{ product.metafields.custom.product_dimensions.value.feature_3_value.value }}"
+            "spec_value_1": "{{ product.metafields.custom.product_dimensions.value.spec_1_value.value }}",
+            "spec_label_2": "{{ product.metafields.custom.product_dimensions.value.feature_2_label.value }}",
+            "spec_value_2": "{{ product.metafields.custom.product_dimensions.value.feature_2_value.value }}",
+            "spec_label_3": "{{ product.metafields.custom.product_dimensions.value.spec_3_label.value }}",
+            "spec_value_3": "{{ product.metafields.custom.product_dimensions.value.feature_3_value.value }}"
           }
         },
         "details_tab_text_qEjjPR": {
           "type": "details_tab_text",
           "settings": {
             "title": "Materials",
-            "content": "<p>Add additional details about materials, care instructions, or warranty here.</p>"
+            "content": "{{ product.metafields.custom.materials | metafield_tag }}"
           }
         },
         "details_tab_text_aK9q8K": {
           "type": "details_tab_text",
           "settings": {
             "title": "Care Instructions",
-            "content": "<p>Add additional details about materials, care instructions, or warranty here.</p>"
+            "content": "{{ product.metafields.custom.care_instructions | metafield_tag }}"
           }
         },
         "details_tab_text_eNtMUq": {
           "type": "details_tab_text",
           "settings": {
             "title": "More Informationn",
-            "content": "<p>Add additional details about materials, care instructions, or warranty here.</p>"
+            "content": "{{ product.metafields.custom.more_informationn | metafield_tag }}"
           }
         }
       },
@@ -406,11 +412,11 @@
         "headings_tcUadg": {
           "type": "headings",
           "settings": {
-            "heading_1": "Heading 1",
-            "heading_2": "Heading 2",
-            "heading_3": "Heading 3",
-            "heading_4": "",
-            "heading_5": "",
+            "heading_1": "Compartments",
+            "heading_2": "Capacity",
+            "heading_3": "Stainless Steel",
+            "heading_4": "Removable Silicone",
+            "heading_5": "Weight",
             "heading_6": "",
             "heading_7": "",
             "heading_8": "",
@@ -431,12 +437,12 @@
         "values_fEkiyK": {
           "type": "values",
           "settings": {
-            "product": "",
-            "value_1": "<p>Value 1</p>",
-            "value_2": "<p>Value 2</p>",
-            "value_3": "<p>Value 3</p>",
-            "value_4": "",
-            "value_5": "",
+            "product": "{{ product.metafields.custom.product_comparison.value.product.value }}",
+            "value_1": "<p>{{ product.metafields.custom.product_comparison.value.value_1.value }}</p>",
+            "value_2": "<p>{{ product.metafields.custom.product_comparison.value.value_2.value }}</p>",
+            "value_3": "<p>{{ product.metafields.custom.product_comparison.value.value_3.value }}</p>",
+            "value_4": "{{ block.settings.product.metafields.custom.product_comparison.value.value_4.value }}",
+            "value_5": "<p>{{ product.metafields.custom.product_comparison.value.value_5.value }}</p>",
             "value_6": "",
             "value_7": "",
             "value_8": "",
@@ -459,12 +465,12 @@
         "values_Y6RFnd": {
           "type": "values",
           "settings": {
-            "product": "",
-            "value_1": "<p>Value 1</p>",
-            "value_2": "<p>Value 2</p>",
-            "value_3": "<p>Value 3</p>",
-            "value_4": "",
-            "value_5": "",
+            "product": "{{ product.metafields.custom.product_comparison_2.value.product.value }}",
+            "value_1": "<p>{{ product.metafields.custom.product_comparison_2.value.value_1.value }}</p>",
+            "value_2": "<p>{{ product.metafields.custom.product_comparison_2.value.value_2.value }}</p>",
+            "value_3": "<p>{{ product.metafields.custom.product_comparison_2.value.value_3.value }}</p>",
+            "value_4": "{{ block.settings.product.metafields.custom.product_comparison_2.value.value_4.value }}",
+            "value_5": "<p>{{ product.metafields.custom.product_comparison_2.value.value_5.value }}</p>",
             "value_6": "",
             "value_7": "",
             "value_8": "",
@@ -487,12 +493,12 @@
         "values_9LwJwD": {
           "type": "values",
           "settings": {
-            "product": "",
-            "value_1": "<p>Value 1</p>",
-            "value_2": "<p>Value 2</p>",
-            "value_3": "<p>Value 3</p>",
-            "value_4": "",
-            "value_5": "",
+            "product": "{{ product.metafields.custom.product_comparison_3.value.product.value }}",
+            "value_1": "<p>{{ product.metafields.custom.product_comparison_3.value.value_1.value }}</p>",
+            "value_2": "<p>{{ product.metafields.custom.product_comparison_3.value.value_2.value }}</p>",
+            "value_3": "<p>{{ product.metafields.custom.product_comparison_3.value.value_3.value }}</p>",
+            "value_4": "{{ block.settings.product.metafields.custom.product_comparison_3.value.value_4.value }}",
+            "value_5": "<p>{{ product.metafields.custom.product_comparison_3.value.value_5.value }}</p>",
             "value_6": "",
             "value_7": "",
             "value_8": "",
@@ -549,21 +555,28 @@
         "item_iYLi6V": {
           "type": "item",
           "settings": {
-            "title": "Do you ship overseas?",
-            "content": "<p>Yes, we ship all over the world. Shipping costs will apply, and will be added at checkout. We run discounts and promotions all year, so stay tuned for exclusive deals.</p>"
+            "title": "Will the painting/color on the bento last?",
+            "content": "<p>Yes, the printing has been made to last if handled with care. Avoid dishwashers and using a metal scrub to extend the lifetime of the prints.</p>"
           }
         },
         "item_DyBP8T": {
           "type": "item",
           "settings": {
-            "title": "How long will it take to get my orders?",
+            "title": "Microwave-safe?",
             "content": "<p>It depends on where you are. Orders processed here will take 5-7 business days to arrive. Overseas deliveries can take anywhere from 7-16 days. Delivery details will be provided in your confirmation email.</p>"
           }
         },
         "item_wFwNNQ": {
           "type": "item",
           "settings": {
-            "title": "Any question?",
+            "title": "Is the Basil bento box safe to use?",
+            "content": "<p>You can contact us through our contact page! We will be happy to assist you.</p>"
+          }
+        },
+        "item_LeQeed": {
+          "type": "item",
+          "settings": {
+            "title": "Will the bento keep my food warm?",
             "content": "<p>You can contact us through our contact page! We will be happy to assist you.</p>"
           }
         }
@@ -571,29 +584,17 @@
       "block_order": [
         "item_iYLi6V",
         "item_DyBP8T",
-        "item_wFwNNQ"
+        "item_wFwNNQ",
+        "item_LeQeed"
       ],
       "name": "FAQ",
       "settings": {
-        "full_width": true,
-        "subheading": "",
-        "title": "FAQ",
-        "content": "<p>Use this text to share information about your product or shipping policies.</p>",
-        "team_avatar_width": 160,
-        "support_hours": "Our customer support is available Monday to Friday: 8am-8:30pm.",
-        "answer_time": "Average answer time: 24h",
-        "button_text": "",
-        "button_url": "",
-        "text_position": "center",
+        "title": "Questions You May Have",
+        "subheading": "WE’VE TRIED TO ANSWER THEM ALL",
         "background": "",
-        "background_gradient": "",
-        "text_color": "",
         "heading_color": "",
-        "heading_gradient": "",
-        "button_background": "",
-        "button_text_color": "",
-        "accordion_background": "",
-        "accordion_text_color": ""
+        "text_color": "",
+        "footer_text": ""
       }
     },
     "testimonials_3bfUTN": {
