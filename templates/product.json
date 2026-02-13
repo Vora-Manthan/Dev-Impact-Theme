@@ -465,7 +465,7 @@
         "values_Y6RFnd": {
           "type": "values",
           "settings": {
-            "product": "{{ product.metafields.custom.product_comparison_2.value.product.value }}",
+            "product": "{{ product }}",
             "value_1": "<p>{{ product.metafields.custom.product_comparison_2.value.value_1.value }}</p>",
             "value_2": "<p>{{ product.metafields.custom.product_comparison_2.value.value_2.value }}</p>",
             "value_3": "<p>{{ product.metafields.custom.product_comparison_2.value.value_3.value }}</p>",
@@ -493,7 +493,7 @@
         "values_9LwJwD": {
           "type": "values",
           "settings": {
-            "product": "{{ product.metafields.custom.product_comparison_3.value.product.value }}",
+            "product": "{{ product }}",
             "value_1": "<p>{{ product.metafields.custom.product_comparison_3.value.value_1.value }}</p>",
             "value_2": "<p>{{ product.metafields.custom.product_comparison_3.value.value_2.value }}</p>",
             "value_3": "<p>{{ product.metafields.custom.product_comparison_3.value.value_3.value }}</p>",
@@ -592,6 +592,8 @@
         "title": "Questions You May Have",
         "subheading": "WE’VE TRIED TO ANSWER THEM ALL",
         "background": "",
+        "show_waves": true,
+        "wave_color": "#fffdf7",
         "heading_color": "",
         "text_color": "",
         "footer_text": ""
@@ -655,6 +657,38 @@
         "heading_gradient": "",
         "testimonial_card_background": "",
         "testimonial_card_text_color": ""
+      }
+    },
+    "new_featured_collection_4VMAr8": {
+      "type": "new-featured-collection",
+      "name": "New Featured collection",
+      "settings": {
+        "collection": "frontpage",
+        "products": [],
+        "full_width": true,
+        "stack_products": true,
+        "show_progress_bar": false,
+        "products_count": 4,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 4,
+        "part_1": "Meet",
+        "part_2": "PixieDash",
+        "part_3": "the Keeper of Colors!",
+        "color_1": "#FFFFFF",
+        "color_2": "#FFD966",
+        "color_3": "#FFFFFF",
+        "subtext": "<p>Each morning, with a swirl of its magic potion, PixieDash paints the world anew.</p>",
+        "subtext_color": "#FFFFFF",
+        "background_color": "#E85CA8",
+        "link_url": "",
+        "link_text": "View all",
+        "background": "",
+        "background_gradient": "",
+        "text_color": "",
+        "heading_color": "",
+        "heading_gradient": "",
+        "product_card_background": "",
+        "product_card_text_color": ""
       }
     },
     "featured_collection_dfpAhh": {
@@ -788,6 +822,7 @@
     "comparison_table_eBUGXX",
     "faq_Fnbq9x",
     "testimonials_3bfUTN",
+    "new_featured_collection_4VMAr8",
     "featured_collection_dfpAhh",
     "featured_collection_Mp7kQg",
     "slideshow_MGApir",
