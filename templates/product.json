@@ -73,6 +73,10 @@
           "disabled": true,
           "settings": {}
         },
+        "personalisation_zEYpP8": {
+          "type": "personalisation",
+          "settings": {}
+        },
         "buy_buttons": {
           "type": "buy_buttons",
           "settings": {
@@ -133,16 +137,6 @@
             "delivery_days": 5,
             "message": "Get it delivered by [date]"
           }
-        },
-        "associated_products_XmkBEm": {
-          "type": "associated_products",
-          "settings": {
-            "title": "Complete the Kit",
-            "stack_products": false,
-            "products_count": 2,
-            "background": "#ffffff",
-            "text_color": ""
-          }
         }
       },
       "block_order": [
@@ -156,20 +150,20 @@
         "choose_your_color_x4Amcy",
         "payment_terms",
         "quantity_selector",
+        "personalisation_zEYpP8",
         "buy_buttons",
         "feature_chart_CmQfeV",
         "offer_H7f37R",
         "offer_XQYUTf",
-        "delivery_estimation_UABHDW",
-        "associated_products_XmkBEm"
+        "delivery_estimation_UABHDW"
       ],
       "settings": {
         "full_width": true,
         "show_fixed_add_to_cart": true,
         "desktop_media_width": 55,
         "desktop_media_layout": "carousel_thumbnails_left",
-        "mobile_media_size": "expanded",
-        "mobile_carousel_control": "floating_dots",
+        "mobile_media_size": "contained",
+        "mobile_carousel_control": "free_scroll",
         "enable_video_autoplay": false,
         "enable_video_looping": true,
         "enable_image_zoom": true,
@@ -303,14 +297,6 @@
     "certifications_jz4BHF": {
       "type": "certifications",
       "blocks": {
-        "cert_item_n7Bkbd": {
-          "type": "cert_item",
-          "settings": {
-            "image": "{{ product.metafields.custom.designed_in_india.value.main_image.value }}",
-            "custom_icon": "",
-            "text": ""
-          }
-        },
         "cert_item_wYnPPC": {
           "type": "cert_item",
           "settings": {
@@ -329,7 +315,6 @@
         }
       },
       "block_order": [
-        "cert_item_n7Bkbd",
         "cert_item_wYnPPC",
         "cert_item_7QLhPd"
       ],
@@ -340,6 +325,7 @@
         "layout_style": "highlight",
         "heading": "Globally Tested",
         "subheading": "100% Free from Harmful Toxins",
+        "main_image": "{{ product.metafields.custom.designed_in_india.value.main_image.value }}",
         "button_label": "",
         "button_link": ""
       }
@@ -666,7 +652,7 @@
         "collection": "frontpage",
         "products": [],
         "full_width": true,
-        "stack_products": true,
+        "stack_products": false,
         "show_progress_bar": false,
         "products_count": 4,
         "products_per_row_mobile": "2",
@@ -674,12 +660,11 @@
         "part_1": "Meet",
         "part_2": "PixieDash",
         "part_3": "the Keeper of Colors!",
-        "color_1": "#FFFFFF",
-        "color_2": "#FFD966",
-        "color_3": "#FFFFFF",
+        "color_1": "#ffffff",
+        "color_2": "#ffd966",
+        "color_3": "#ffffff",
         "subtext": "<p>Each morning, with a swirl of its magic potion, PixieDash paints the world anew.</p>",
-        "subtext_color": "#FFFFFF",
-        "background_color": "#E85CA8",
+        "subtext_color": "#ffffff",
         "link_url": "",
         "link_text": "View all",
         "background": "",
@@ -698,7 +683,7 @@
         "collection": "frontpage",
         "products": [],
         "full_width": true,
-        "stack_products": true,
+        "stack_products": false,
         "show_progress_bar": false,
         "products_count": 4,
         "products_per_row_mobile": "2",
@@ -724,7 +709,7 @@
         "collection": "frontpage",
         "products": [],
         "full_width": true,
-        "stack_products": true,
+        "stack_products": false,
         "show_progress_bar": false,
         "products_count": 4,
         "products_per_row_mobile": "2",
