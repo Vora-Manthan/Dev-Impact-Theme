@@ -1,128 +1,5 @@
-{% schema %}
-{
-  "name": "Certifications",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Section Colors"
-    },
-    {
-      "type": "color",
-      "id": "section_bg",
-      "label": "Background Color",
-      "default": "#FDFDE0"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_wave",
-      "label": "Show Wavy Background",
-      "default": true
-    },
-    {
-      "type": "select",
-      "id": "layout_style",
-      "label": "Layout Style",
-      "options": [
-        {
-          "value": "grid",
-          "label": "Standard Grid (Certifications)"
-        },
-        {
-          "value": "highlight",
-          "label": "Product Highlight (Designed in India)"
-        }
-      ],
-      "default": "grid"
-    },
-    {
-      "type": "header",
-      "content": "Content"
-    },
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Globally Tested"
-    },
-    {
-      "type": "text",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "100% Free from Harmful Toxins"
-    },
-    {
-      "type": "image_picker",
-      "id": "main_image",
-      "label": "Main Image (Optional)",
-      "info": "Upload a large central image (e.g., product exploded view). If used, layout changes to 'Product Highlight' style."
-    },
-    {
-        "type": "text",
-        "id": "button_label",
-        "label": "Button Label",
-        "default": "VIEW ALL CERTIFICATIONS"
-    },
-    {
-        "type": "url",
-        "id": "button_link",
-        "label": "Button Link"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "cert_item",
-      "name": "Certification / Feature",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Icon Image"
-        },
-        {
-          "type": "html",
-          "id": "custom_icon",
-          "label": "Custom Icon (SVG/HTML)",
-          "info": "Use this for SVG code. Overrides Image."
-        },
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>FDA Approved</p>"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Certifications",
-      "blocks": [
-        {
-          "type": "cert_item",
-          "settings": {
-            "text": "<p>FDA Approved</p>"
-          }
-        },
-        {
-          "type": "cert_item",
-          "settings": {
-            "text": "<p>IP Patented</p>"
-          }
-        },
-        {
-          "type": "cert_item",
-          "settings": {
-            "text": "<p>Child Safety Certificate</p>"
-          }
-        }
-      ]
-    }
-  ]
-}
-{% endschema %}
-
 <style>
-  .certifications-section {
+  .certifications-section.custom-{{ section.id }} {
     background-color: {{ section.settings.section_bg }};
     position: relative;
     padding: 60px 0;
@@ -143,11 +20,12 @@
 
   .wave-top {
     top: -1px; /* Overlap slightly to prevent gaps */
-    transform: rotate(0deg);
+    transform: rotate(180deg);
   }
 
   .wave-bottom {
     bottom: -1px;
+    transform: rotate(180deg);
   }
 
   .wave-svg {
@@ -162,29 +40,46 @@
   }
   
   .layout-grid .cert-icon-wrapper {
-      width: 140px;
-      height: 140px;
+      width: 114px;
+      height: 115px;
+      aspect-ratio: 113/114;
   }
 
   .layout-highlight .cert-icon-wrapper {
-      width: 80px;
-      height: 80px;
+      width: 48px;
+      height: 48px;
+      border-radius: 32px;
+    background: #FFF;
   }
+  .layout-highlight .cert-text {
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+  .layout-highlight .cert-icon-wrapper img {
+    width: 26px;
+    height: 26px;
+}
   
   .layout-highlight .cert-grid {
       max-width: 600px; 
       margin: 0 auto;
-      gap: 30px; /* Vertical gap */
+      gap: 0;
   }
   
   /* 1 Icon in First Row, 2 in Second Row Logic */
   .layout-highlight .cert-item {
-      flex: 1 1 100%; /* Default to full width for first item */
+      {% comment %} flex: 1 1 100%;  {% endcomment %}
       max-width: 100%;
   }
 
+  .layout-highlight .cert-grid .cert-item:first-child {
+  border-right: 1px solid #ccc; 
+}
+
   .layout-highlight .cert-item:nth-child(n+2) {
-      flex: 1 1 45%; /* Next items share row */
+      flex: 1 1 45%; 
       max-width: 50%;
   }
   
@@ -220,6 +115,8 @@
     position: relative;
     z-index: 2;
     text-align: center;
+    margin-top: 40px;
+    margin-bottom: 40px;
   }
 
   .cert-heading-wrapper {
@@ -403,11 +300,14 @@
   }
 </style>
 
-<div class="certifications-section">
+<div class="certifications-section custom-{{ section.id }}">
   {% if section.settings.show_wave %}
     <div class="wave-top">
-      <svg class="wave-svg" viewBox="0 0 1440 64" preserveAspectRatio="none">
+      {% comment %} <svg class="wave-svg" viewBox="0 0 1440 64" preserveAspectRatio="none">
         <path d="M0,64L48,60.8C96,58,192,51,288,42.7C384,34,480,25,576,26.7C672,29,768,43,864,48C960,53,1056,51,1152,42.7C1248,34,1344,19,1392,11.7L1440,4.3L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
+      </svg> {% endcomment %}
+      <svg class="wave-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 71" preserveAspectRatio="none">
+        <path d="M0 500.899C0 500.899 303.947 477.24 720 500.899C720 500.899 1299.28 533.856 1440 500.899V37.0659C1299.28 70.0224 720 20.0464 720 20.0464C303.5 -33.4537 0 37.0659 0 37.0659V500.899Z" fill="#EFF5C1"/>
       </svg>
     </div>
   {% endif %}
@@ -460,9 +360,134 @@
   
   {% if section.settings.show_wave %}
     <div class="wave-bottom">
-      <svg class="wave-svg" viewBox="0 0 1440 64" preserveAspectRatio="none">
+      {% comment %} <svg class="wave-svg" viewBox="0 0 1440 64" preserveAspectRatio="none">
          <path d="M0,0L48,5.3C96,11,192,21,288,29.3C384,37,480,48,576,45.3C672,43,768,27,864,21.3C960,16,1056,16,1152,24C1248,32,1344,48,1392,56L1440,64L1440,64L1392,64C1344,64,1248,64,1152,64C1056,64,960,64,864,64C768,64,672,64,576,64C480,64,384,64,288,64C192,64,96,64,48,64L0,64Z"></path>
+      </svg> {% endcomment %}
+      <svg class="wave-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 71" preserveAspectRatio="none">
+        <path d="M1440 -430.353C1440 -430.353 1136.05 -406.694 720 -430.353C720 -430.353 140.722 -463.309 0 -430.353V33.4805C140.722 0.523956 720 50.5 720 50.5C1136.5 104 1440 33.4805 1440 33.4805V-430.353Z" fill="#F8EA8B"/>
       </svg>
     </div>
   {% endif %}
 </div>
+{% schema %}
+{
+  "name": "Certifications",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Colors"
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Background Color",
+      "default": "#FDFDE0"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wave",
+      "label": "Show Wavy Background",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout Style",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Standard Grid (Certifications)"
+        },
+        {
+          "value": "highlight",
+          "label": "Product Highlight (Designed in India)"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Globally Tested"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "100% Free from Harmful Toxins"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main Image (Optional)",
+      "info": "Upload a large central image (e.g., product exploded view). If used, layout changes to 'Product Highlight' style."
+    },
+    {
+        "type": "text",
+        "id": "button_label",
+        "label": "Button Label",
+        "default": "VIEW ALL CERTIFICATIONS"
+    },
+    {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "cert_item",
+      "name": "Certification / Feature",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon Image"
+        },
+        {
+          "type": "html",
+          "id": "custom_icon",
+          "label": "Custom Icon (SVG/HTML)",
+          "info": "Use this for SVG code. Overrides Image."
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>FDA Approved</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Certifications",
+      "blocks": [
+        {
+          "type": "cert_item",
+          "settings": {
+            "text": "<p>FDA Approved</p>"
+          }
+        },
+        {
+          "type": "cert_item",
+          "settings": {
+            "text": "<p>IP Patented</p>"
+          }
+        },
+        {
+          "type": "cert_item",
+          "settings": {
+            "text": "<p>Child Safety Certificate</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
