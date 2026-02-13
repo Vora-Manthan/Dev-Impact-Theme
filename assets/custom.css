@@ -234,3 +234,104 @@ section.slide-show-new .slideshow .slideshow__carousel .desktop-white-img {
   align-items: center;
   height: 100%;
 }
+
+/* Choose Your Color Custom Styles */
+.main_color_variant {
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+.main_color_variant_product_heading {
+  font-size: 18px;
+  margin-bottom: 16px;
+  color: var(--text-color);
+  font-weight: 400;
+}
+.color_variant_product .thumbnail-swatch {
+    padding: 3px;
+    --swatch-size: 80px;
+    border-radius: 16px;
+}
+.main_color_variant_product_heading .selected-color-name {
+  font-weight: 700;
+}
+
+.main_color_variant_product {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.color_variant_product {
+  text-align: center;
+  width: 100px;
+  position: relative;
+}
+
+.color_variant_product a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: var(--text-color);
+  gap: 8px;
+}
+
+.thumbnail-swatch {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  border: 2px solid transparent;
+  transition: all 0.2s;
+  cursor: pointer;
+  margin-bottom: 0;
+}
+
+.thumbnail-swatch img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px; /* Slightly less than container */
+  display: block;
+}
+
+/* Selected state */
+.color_variant_selected .thumbnail-swatch {
+  border-color: #1A332E;
+  padding: 3px;
+}
+
+.color_variant_color_name {
+  font-size: 16px;
+  line-height: 1.2;
+  color: #1A332E;
+}
+
+/* Sold Out State */
+.out-of-stock-span {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  border: 1px solid #FFC0CB; /* Pinkish border as seen in image */
+  color: #1A332E;
+  z-index: 2;
+}
+
+/* Adjustments for sold out container if needed */
+.color_variant_product.out-of-stock .thumbnail-swatch::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0.4);
+  pointer-events: none;
+}

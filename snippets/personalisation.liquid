@@ -1,0 +1,310 @@
+
+{% if product.metafields.custom.personalisation.value == true %}
+<style>
+    .techplusd2c-container {
+    border: 1px solid #C2DB6E;
+    border-radius: 24px;
+    padding: 8px;
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    margin: 0 0 24px;
+    background: #fff;
+    }
+    .techplusd2c-container.techplusd2c-checked {
+    flex-direction: column;
+    align-items: flex-start;
+    }
+    .techplusd2c-label-text {
+    color: #05461F;
+    font-size: 13px;
+    line-height: 1;
+    flex-grow: 1;
+    }
+    .techplusd2c-bento-form {
+    padding: 16px 8px 8px;
+    width: 100%;
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    }
+    .techplusd2c-input-wrapper {
+    position: relative;
+    width: 100%;
+    }
+    .techplusd2c-submit-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #00794f;
+    border: none;
+    border-radius: 50%;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    }
+    .techplusd2c-bento-form input[type="text"] {
+    width: 100%;
+    padding: 4px 4px 4px 36px;
+    border: 1px solid #fff;
+    border-radius: 43px;
+    background-color: #FFFADA;
+    color: #767676;
+    font-size: 13px;
+    }
+    .techplusd2c-note {
+    font-size: 11px;
+    color: #006A54;
+    line-height: 16px;
+    }
+    .techplusd2c-note > span {
+    color: #1a332e;
+    font-family: 'ObviouslyB' !important;
+    text-decoration: underline;
+    cursor: pointer;
+    }
+    .techplusd2c-form-note {
+    color: #C2DB6E;
+    font-size: 11px;
+    line-height: 16px;
+    }
+    .techplusd2c-form-note:empty {
+    display: none;
+    }
+    .techplusd2c-checkbox {
+    accent-color: #C2DB6E;
+    width: 100%;
+    max-width: 29px;
+    height: 29px;
+    border-radius: 50%;
+    outline: 1px solid #c2db6e;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -o-appearance: none;
+    background: #fff;
+    appearance: none;
+    cursor: pointer;
+    position: relative;
+    }
+    .techplusd2c-checkbox:focus:not(:focus-visible) {
+    outline: 1px solid #c2db6e;
+    }
+    .techplusd2c-checkbox:checked {
+    background-color: #C2DB6E;
+    }
+    .techplusd2c-checkbox:checked::after {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: 11px;
+    width: 7px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    }
+    .techplusd2c-icon {
+    width: 100%;
+    max-width: 84px;
+    min-width: 84px;
+    height: auto;
+    margin: 0 0 -8px;
+    }
+
+    .popup-overlay-create {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay */
+    z-index: 9999;
+    justify-content: center;
+    align-items: center;
+    }
+    .popup-box-create {
+    background: #FBFAF1;
+    padding: 32px;
+    border-radius: 16px;
+    max-width: 90%;
+    width: 480px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    text-align: center;
+    position: relative;
+    }
+    .popup-box-img-create{
+    max-width: 100%;
+    height: auto;
+    object-fit:cover;
+    border-radius: 12px;
+    margin-top:24px;
+    }
+    .close-btn-create {
+    position: absolute;
+    top: 5px;
+    right: 32px;
+    font-size: 24px;
+    cursor: pointer;
+    font-family: 'ObviouslyB';
+    }
+    @media (max-width: 600px) {
+    .popup-box-create {
+        width: 90%;
+    }  
+    }
+</style>
+<div class="techplusd2c-container" id="techplusd2c-bentoContainer">
+    <div style="display: flex; align-items: center; gap: 24px; width: 100%;">
+    <input type="checkbox" class="techplusd2c-checkbox" id="techplusd2c-personalizeCheckbox">
+    <label for="techplusd2c-personalizeCheckbox" class="techplusd2c-label-text bold">Personalise for ₹{{ product.metafields.custom.personalisation_amount.value }}</label>
+    <img src="/cdn/shop/files/Layer_1_090d2b4b-55c3-4c17-b290-068cccb7fab3.svg" alt="Icon" class="techplusd2c-icon">
+    </div>
+    <div class="techplusd2c-bento-form" id="techplusd2c-bentoForm">
+    <!-- <input type="text" maxlength="8" placeholder="8 characters left"> -->
+    <form id="techplusd2c-form">
+        <div class="techplusd2c-input-wrapper">
+        <input type="text" id="techplusd2c-input" maxlength="8" placeholder="8 characters left" autocomplete="off" required>
+        <button type="submit" class="techplusd2c-submit-btn" id="techplusd2c-submitButton">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M13.1665 7.82544H3.1665" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M9.1333 3.9917L11.15 5.90843L13.1154 7.87385M13.1666 7.82515L9.1333 11.6592" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </button>
+        </div>
+    </form>
+    <div class="techplusd2c-form-note" id="techplusd2c-msg"></div>
+    <div class="techplusd2c-note" onclick="showClickPopupCreate()">* <span>Click here</span> see how your personalisation looks</div>
+    <div class="techplusd2c-note">* Personalised products are not returnable unless there is a manufacturing defect.</div>
+    </div>
+
+    <!-- popup start -->
+    <div id="techplusd2c-popupOverlayCreate" class="popup-overlay-create" onclick="closePopupCreate()">
+    <div class="popup-box-create" onclick="event.stopPropagation();">
+        <div class="close-btn-create" onclick="closePopupCreate()">×</div>
+        {% if product.metafields.custom.personalisation_pop_up_image != blank %}
+        <img class="popup-box-img-create" src="/cdn/shop/{{ product.metafields.custom.personalisation_pop_up_image.value }}" alt="Personalization Image" />
+        {% endif %}
+    </div>
+    </div>
+    <!-- popup end  -->
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const checkbox = document.getElementById('techplusd2c-personalizeCheckbox');
+    const form = document.getElementById('techplusd2c-bentoForm');
+    const container = document.getElementById('techplusd2c-bentoContainer');
+    const realForm = document.getElementById('techplusd2c-form');
+    const input = document.getElementById('techplusd2c-input');
+    // Add input restriction to alphabets only
+    input.addEventListener('input', function () {
+        this.value = this.value.replace(/[^a-zA-Z]/g, '');
+    });
+    
+    const submitButton = document.getElementById('techplusd2c-submitButton');
+    const msgElement = document.getElementById('techplusd2c-msg');
+    const originalSVG = `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.1665 7.82544H3.1665" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.1333 3.9917L11.15 5.90843L13.1154 7.87385M13.1666 7.82515L9.1333 11.6592" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+    const firstVariantId = window.meta?.product?.variants?.[0]?.id || window.product?.variants?.[0]?.id;
+    const secondVariantId = window.meta?.product?.variants?.[1]?.id || window.product?.variants?.[1]?.id;
+    const shopifyForm = document.querySelector('.shopify-section--main-product .product-info .product-info__block-item[data-block-type="quantity-selector"] form');
+    const variantInput = document.querySelector('.shopify-section--main-product .product-info .product-info__block-item[data-block-type="quantity-selector"] form input[name="id"]');
+
+    // Utility: remove existing personalization input
+    function removePersonalizationInput() {
+        const existing = shopifyForm.querySelector('input[name="properties[Personalise]"]');
+        if (existing) {
+        existing.remove();
+        }
+    }
+    
+    checkbox.addEventListener('change', () => {
+        if (checkbox.checked) {
+        form.style.display = 'flex';
+        container.classList.add('techplusd2c-checked');
+        } else {
+        form.style.display = 'none';
+        container.classList.remove('techplusd2c-checked');
+
+        // RESET everything when unchecked
+        input.value = "";
+        submitButton.innerHTML = originalSVG;
+        msgElement.textContent = "";
+        variantInput.value = firstVariantId;
+        
+        // let existing = shopifyForm.querySelector('input[name="properties[Personalise]"]');
+        // if (existing) {
+        //   existing.remove();
+        // }
+        removePersonalizationInput();
+        }
+    });
+
+    realForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        removePersonalizationInput();
+        
+        if (input.value.trim().length >= 1) {
+        submitButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 12 8" fill="none"><path d="M2 4.16667L4.66667 6.5L10 1.5" stroke="#FFC844" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        msgElement.textContent = "Yay! That fits perfectly. Looks short & sweet!";
+        variantInput.value = secondVariantId;
+
+        const personalizationInput = document.createElement('input');
+        personalizationInput.type = 'hidden';
+        personalizationInput.name = 'properties[Personalise]';
+        personalizationInput.value = input.value;
+        shopifyForm.appendChild(personalizationInput);
+        } else {
+        alert('Please enter at least 1 character.');
+        }
+    });
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key !== 'Enter') {
+        submitButton.innerHTML = originalSVG;
+        msgElement.textContent = "";
+        variantInput.value = firstVariantId;
+
+        // let existing = shopifyForm.querySelector('input[name="properties[Personalise]"]');
+        // if (existing) {
+        //   existing.remove();
+        // }
+        removePersonalizationInput();
+        }
+    });
+
+    input.addEventListener('blur', () => { // mainly written this code to submit the form through 'done' btn from ios keyboard
+        if (input.value.trim().length >= 1) {
+
+        removePersonalizationInput();
+        
+        submitButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 12 8" fill="none"><path d="M2 4.16667L4.66667 6.5L10 1.5" stroke="#FFC844" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        msgElement.textContent = "Yay! That fits perfectly. Looks short & sweet!";
+        variantInput.value = secondVariantId;
+
+        const personalizationInput = document.createElement('input');
+        personalizationInput.type = 'hidden';
+        personalizationInput.name = 'properties[Personalise]';
+        personalizationInput.value = input.value;
+        shopifyForm.appendChild(personalizationInput);
+        } else {
+        alert('Please enter at least 1 character.');
+        }
+    });
+    });
+
+    function showClickPopupCreate() {
+    document.getElementById('techplusd2c-popupOverlayCreate').style.display = 'flex';
+    document.body.style.overflow = 'hidden'; 
+    }
+    
+    function closePopupCreate() {
+    document.getElementById('techplusd2c-popupOverlayCreate').style.display = 'none';
+    document.body.style.overflow = '';
+    }
+</script>
+{%- endif -%}
+
+       

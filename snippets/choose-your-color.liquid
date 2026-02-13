@@ -1,34 +1,53 @@
-{% if product.metafields.custom.choose_your_color.value != blank %}
-    {% assign choose_your_color = product.metafields.custom.choose_your_color.value %}
-    <span class="choose-your-color_text">Choose your Color : <b>{{ product.metafields.custom.choose_your_color_name }}</b></span>
-   
-    <div class="choose-your-color_wrapper">
-    {% for p_product in choose_your_color %}
-    {% assign active_color = false %}
-    {% if product.metafields.custom.choose_your_color_name == p_product.metafields.custom.choose_your_color_name %}
-        {% assign active_color = true %}
-    {% endif %}
-        {% if active_color == false %}
-            <a href="{{ p_product.url }}" class="choose-your-color ">
-        {% else %}
-            <div class="choose-your-color active">
-        {% endif %}
-            <div class="choose-your-color_image">
-            <img
-             src="{{ p_product.metafields.custom.choose_your_color_image | image_url: width: 80 , height: 80 }}"
-             width="80"
-             height="80"
-             alt="{{ p_product.metafields.custom.choose_your_color_name }}">
-             {% if p_product.available == false %}
-             <span class="choose-your-color_sold-out">Sold Out</span>
-             {% endif %}
-             </div>
-            <span>{{ p_product.metafields.custom.choose_your_color_name }}</span>
-        {% if active_color == false %}
-            </a>
-        {% else %}
-        </div>
-        {% endif %}
-    {% endfor %}
-    </div>
-{% endif %}     
+
+          {% comment %} for color variant emulation_start{% endcomment %}
+           {% if product.metafields.custom.swatch_image.value != blank and product.metafields.custom.swatch_name.value != blank and product.metafields.custom.connected_products.value != blank %}
+           {% comment %} {% if product.metafields.custom.more_options.value != blank and product.metafields.custom.color.value != blank %}{% endcomment %}
+                <div class="main_color_variant">
+                   <div class="main_color_variant_product_heading swach">
+                      Choose your Color :
+                      <span class="selected-color-name bold">
+                          {{ product.metafields.custom.swatch_name.value }}
+                      </span>
+                    </div>
+                    <div class="main_color_variant_product">
+                        {% comment %} default color {% endcomment %}
+                       {% if product.metafields.custom.swatch_image.value != blank %}
+                         {% comment %}{% if product.metafields.custom.color.value != blank %}{% endcomment %}
+                            <div class="color_variant_product {% if product.available == false %}out-of-stock{% endif %}">
+                                <a href="javascript:void(0)" class="color_variant_selected">  
+                                  <label class="thumbnail-swatch thumbnail-swatch--sm">
+                                      <img src="/cdn/shop/{{ product.metafields.custom.swatch_image.value }}" />
+                                      {% if product.available == false %}
+                                        <span class="out-of-stock-span">Sold Out</span>
+                                      {% endif %}
+                                  </label>
+                                  <span class="color_variant_color_name">{{ product.metafields.custom.swatch_name.value }}</span>
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {% comment %} meta list material variant {% endcomment %}
+                        {% if product.metafields.custom.connected_products.value != blank %}
+                            {% for value in product.metafields.custom.connected_products.value %}
+                                {% assign color_variation = value.metafields %}
+
+                                {% comment %} check if the fetched product have default color set {% endcomment %}
+                                {% if color_variation.custom.swatch_image.value != blank %}
+                                    <div class="color_variant_product {% if value.selected_or_first_available_variant.inventory_quantity == 0 and value.selected_or_first_available_variant.available == false %}out-of-stock{% endif %}">
+                                        <a href="{{ value.handle }}">
+                                            <label class="thumbnail-swatch thumbnail-swatch--sm">
+                                                <img src="/cdn/shop/{{ color_variation.custom.swatch_image.value }}" />
+                                                {% if value.selected_or_first_available_variant.inventory_quantity == 0 and value.selected_or_first_available_variant.available == false %}
+                                                  <span class="out-of-stock-span">Sold Out</span>
+                                                {% endif %}
+                                            </label>
+                                            <span class="color_variant_color_name">{{ color_variation.custom.swatch_name.value }}</span>
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+          {% comment %} for color variant emulation_end {% endcomment %}

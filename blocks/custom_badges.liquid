@@ -1,0 +1,7 @@
+{%if product.metafields.custom.custom_badges != blank %}
+    <div class="custom-badges">
+        {% for badge in product.metafields.custom.custom_badges.value %}
+            <span class="custom_badge">{{ badge.value }}</span>
+        {% endfor %}
+    </div>
+{%endif%}

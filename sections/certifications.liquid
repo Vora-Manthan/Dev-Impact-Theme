@@ -155,7 +155,7 @@
     display: flex;
     justify-content: center;
     align-items: flex-start; /* Align items at top */
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
     gap: 0; /* Gaps handled by padding/borders */
   }
   
@@ -266,36 +266,53 @@
     }
     
     .cert-grid {
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
+      flex-direction: row; /* Force row layout */
+      align-items: flex-start;
+      gap: 0;
+      flex-wrap: nowrap; /* Prevent wrapping */
     }
     
     .cert-grid.has-main-image {
-        flex-direction: row; /* Keep side-by-side for small icons if they fit, otherwise column */
-        gap: 30px;
+        flex-direction: row; 
+        gap: 10px;
     }
 
     .cert-item {
-      width: 100%;
-      padding: 0;
+      width: 33.33%; /* 3 items per row */
+      padding: 0 5px; /* Reduced padding */
       border: none;
+      min-width: 0; /* Allow shrinking */
     }
 
     .cert-item:not(:last-child)::after {
-      display: none; /* Hide vertical dividers on mobile column layout */
+      display: block; /* Show vertical dividers */
+      right: 0;
+      top: 10%;
+      height: 80%;
+      width: 1px;
+      background-color: #333;
+      opacity: 0.2;
     }
     
-    /* Re-add dividers for the side-by-side layout if needed, 
-       but typically mobile stacks. 
-       For the "Designed in India" layout, user might want them side-by-side on mobile too 
-       since they are small. */
-       
-    .cert-grid.has-main-image .cert-item {
-        width: auto; 
+    .layout-grid .cert-icon-wrapper {
+        width: 60px; /* Smaller icons */
+        height: 60px;
+        margin-bottom: 10px;
     }
-    .cert-grid.has-main-image .cert-item:not(:last-child)::after {
-        display: block; /* Keep divider for the small icon row */
+    
+    .cert-text {
+        font-size: 0.8rem; /* Smaller text */
+        line-height: 1.2;
+    }
+
+    /* Adjustments for highlight layout on mobile if needed */
+    .layout-highlight .cert-grid {
+        gap: 0;
+    }
+    
+    .layout-highlight .cert-item:nth-child(n+2) {
+        flex: 1;
+        max-width: 50%;
     }
   }
 </style>
