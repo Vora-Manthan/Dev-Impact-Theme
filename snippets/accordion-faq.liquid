@@ -1,0 +1,99 @@
+{%- comment -%}
+----------------------------------------------------------------------------------------------------------------------
+FAQ ACCORDION COMPONENT
+----------------------------------------------------------------------------------------------------------------------
+Custom accordion for the FAQ section with specific styling:
+- White card background
+- Rounded corners
+- Plus/Minus icons
+- Dashed separator line
+{%- endcomment -%}
+
+<style>
+  .faq-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+  }
+
+  .faq-card summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .faq-card summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-card__title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #1a1a1a;
+  }
+
+  .faq-card__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    position: relative;
+  }
+
+  .faq-card__icon svg {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    stroke-width: 2px;
+  }
+
+  .faq-card details[open] .icon-plus {
+    display: none;
+  }
+  
+  .faq-card details:not([open]) .icon-minus {
+    display: none;
+  }
+
+  .faq-card details[open] .faq-dashed-line {
+    display: block;
+    margin: 15px 0;
+    border-top: 2px dashed #e5e5e5; /* Dashed line color */
+    width: 100%;
+  }
+
+  .faq-card__content {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #4a4a4a;
+    padding-top: 5px;
+  }
+
+</style>
+
+<div class="faq-card">
+  <details {% if open %}open{% endif %}>
+    <summary>
+      <span class="faq-card__title">{{ title }}</span>
+      <span class="faq-card__icon">
+        <svg class="icon-plus" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <svg class="icon-minus" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </summary>
+    <div class="faq-dashed-line"></div>
+    <div class="faq-card__content">
+      {{ content }}
+    </div>
+  </details>
+</div>

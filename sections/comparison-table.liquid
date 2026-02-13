@@ -178,6 +178,13 @@
        aspect-ratio: 1 / 1;
     }
   }
+  
+  .comparison-icon {
+    width: 30px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
 </style>
 
 <div {% render 'section-properties' %}>
@@ -260,21 +267,31 @@
           {%- comment -%} VALUE COLUMNS {%- endcomment -%}
           {%- for block in values_blocks -%}
              <div class="comparison-cell comparison-cell--value" style="grid-column: {{ forloop.index | plus: 1 }}; grid-row: {{ current_grid_row }};">
-                {%- assign value = block.settings[value_key] -%}
-                {%- assign stripped_value = value | strip_html | strip -%}
-                
-                {%- if stripped_value == 'FALSE' or stripped_value == 'False' -%}
-                  <svg fill="none" class="icon icon-cross" width="24" height="24" viewBox="0 0 24 24">
-                     <circle cx="12" cy="12" r="10" stroke-width="2" fill="none"/>
-                     <path d="M15 9L9 15M9 9L15 15" stroke-width="2" stroke-linecap="round"/>
-                   </svg>
-                {%- elsif stripped_value == 'TRUE' or stripped_value == 'True' -%}
-                   <svg fill="none" class="icon icon-check" width="24" height="24" viewBox="0 0 24 24">
-                     <circle cx="12" cy="12" r="10" stroke-width="2" fill="none"/>
-                     <path d="M8 12L11 15L16 9" stroke-width="2" stroke-linecap="round"/>
-                   </svg>
+                {%- if i == 4 -%}
+                    {%- assign icon_image = block.settings[value_key] -%}
+                    {%- comment -%} Check if image is valid by looking for width property {%- endcomment -%}
+                    {%- if icon_image != blank and icon_image.width -%}
+                      {{ icon_image | image_url: width: 60 | image_tag: class: 'comparison-icon', loading: 'lazy' }}
+                    {%- else -%}
+                      <div class="prose text-subdued">—</div>
+                    {%- endif -%}
                 {%- else -%}
-                  <div class="prose text-subdued">{{- value | default: '—' -}}</div>
+                    {%- assign value = block.settings[value_key] -%}
+                    {%- assign stripped_value = value | strip_html | strip -%}
+                    
+                    {%- if stripped_value == 'FALSE' or stripped_value == 'False' -%}
+                      <svg fill="none" class="icon icon-cross" width="24" height="24" viewBox="0 0 24 24">
+                         <circle cx="12" cy="12" r="10" stroke-width="2" fill="none"/>
+                         <path d="M15 9L9 15M9 9L15 15" stroke-width="2" stroke-linecap="round"/>
+                       </svg>
+                    {%- elsif stripped_value == 'TRUE' or stripped_value == 'True' -%}
+                       <svg fill="none" class="icon icon-check" width="24" height="24" viewBox="0 0 24 24">
+                         <circle cx="12" cy="12" r="10" stroke-width="2" fill="none"/>
+                         <path d="M8 12L11 15L16 9" stroke-width="2" stroke-linecap="round"/>
+                       </svg>
+                    {%- else -%}
+                      <div class="prose text-subdued">{{- value | default: '—' -}}</div>
+                    {%- endif -%}
                 {%- endif -%}
              </div>
           {%- endfor -%}
@@ -595,9 +612,9 @@
           "label": "Value 3"
         },
         {
-          "type": "richtext",
+          "type": "image_picker",
           "id": "value_4",
-          "label": "Value 4"
+          "label": "Value 4 (Image)"
         },
         {
           "type": "richtext",
