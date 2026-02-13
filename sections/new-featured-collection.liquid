@@ -137,13 +137,37 @@ img.w-img-fav, img.w-img-favi, img.w-img-first, img.w-img-second {
   margin-right: auto;
   font-family: Parkinsans;
 }
-.big-svg-down{
+@media screen and (max-width: 1149px){
+  #shopify-section-{{ section.id }} .product-list {
+    --product-list-carousel-item-width: 42vw;
+  }
 
-}
-.big-svg-top {
-    position: relative;
-    bottom: -10px;
-}
+    .page-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 20px;
+    }
+    .page-dots button {
+      width: 8px;
+      height: 4px;
+      border-radius: 100px;
+      background: var(--Grey, #545555);
+      padding: 0;
+      border: none;
+      transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
+    .page-dots button[aria-current="true"] {
+      width: 48px;
+      height: 4px;
+      border-radius: 100px;
+      background: var(--Cream, #FDFFF1);
+    }
+    }
+    .big-svg-top {
+        position: relative;
+        bottom: -10px;
+    }
   </style>
 
   <div class="big-svg-top">
@@ -271,6 +295,14 @@ img.w-img-fav, img.w-img-favi, img.w-img-first, img.w-img-second {
             </product-list>
           </reveal-items>
         </scroll-carousel>
+
+        <page-dots aria-controls="{{ scroll_area_id }}" class="page-dots lg:hidden">
+          {%- for product in products limit: section.settings.products_count -%}
+            <button type="button" class="tap-area" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+              <span class="sr-only">{{ 'general.accessibility.go_to_item' | t: index: forloop.index }}</span>
+            </button>
+          {%- endfor -%}
+        </page-dots>
 
         {%- if section.settings.stack_products == false -%}
           {%- if section.settings.show_progress_bar -%}
