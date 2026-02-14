@@ -137,12 +137,12 @@ section.slide-show-new .slideshow .slideshow__carousel .desktop-white-img {
   .header__link-list>ul>li>details[open] summary{ font-weight: 600; }
 }
 
-.product-info__offer-list {
+.product-info__offer-list, .kit-products {
   cursor: grab;
   cursor: -webkit-grab;
 }
 
-.product-info__offer-list.active {
+.product-info__offer-list.active, .kit-products.active {
   cursor: grabbing;
   cursor: -webkit-grabbing;
 }
@@ -651,4 +651,28 @@ input:checked + .techplusd2c-slider:before {
   font-size: 24px;
   cursor: pointer;
   color: #1A332E;
+}
+
+/* Complete the Kit Layout */
+.kit-products {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+@media screen and (min-width: 990px) {
+  .kit-products {
+    display: flex;
+    gap: 16px;
+    flex-direction: row;
+    overflow-x: scroll;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  .kit-product-card {
+    margin-bottom: 0; /* Reset margin in grid */
+    height: 96px;
+    width: 358px;
+  }
 }

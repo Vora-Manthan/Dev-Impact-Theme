@@ -14,13 +14,14 @@ $(document).ready(function(){
       }
   });
 
-  // Drag to scroll for product offer list
-  const slider = document.querySelector('.product-info__offer-list');
-  let isDown = false;
-  let startX;
-  let scrollLeft;
+  // Drag to scroll for product offer list and kit products
+  const sliders = document.querySelectorAll('.product-info__offer-list, .kit-products');
 
-  if(slider) {
+  sliders.forEach(slider => {
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
     slider.addEventListener('mousedown', (e) => {
       isDown = true;
       slider.classList.add('active');
@@ -42,7 +43,7 @@ $(document).ready(function(){
       const walk = (x - startX) * 2; //scroll-fast
       slider.scrollLeft = scrollLeft - walk;
     });
-  }
+  });
 
   // Delivery Estimation Logic
   $(document).on('click', '.delivery-estimation__button', function() {

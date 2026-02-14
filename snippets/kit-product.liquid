@@ -14,9 +14,9 @@
       {%- endif -%}
       
       <div class="kit-product-price-wrapper">
-         <span class="kit-product-price">{{ product.price | money }}</span>
+         <span class="kit-product-price">{{ product.price | money |  replace: 'Rs. ','₹' }}</span>
          {% if product.compare_at_price > product.price %}
-           <span class="kit-product-compare-price">{{ product.compare_at_price | money }}</span>
+           <span class="kit-product-compare-price">{{ product.compare_at_price | money |  replace: 'Rs. ','₹' }}</span>
            <span class="kit-product-discount">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% OFF</span>
          {% endif %}
       </div>
