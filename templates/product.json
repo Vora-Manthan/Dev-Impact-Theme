@@ -93,11 +93,11 @@
           "settings": {
             "icon_width": 40,
             "icon_1": "shopify://shop_images/Group_2147205248.svg",
-            "text_1": "<p>FDA</p><p>Approved<br/><br/></p>",
+            "text_1": "<p>FDA</p><p>Approved</p>",
             "icon_2": "shopify://shop_images/shield-01.svg",
-            "text_2": "<p>6 Months</p><p>Warranty<br/><br/><br/><br/></p>",
+            "text_2": "<p>6 Months</p><p>Warranty</p>",
             "icon_3": "shopify://shop_images/shipping-truck-01.svg",
-            "text_3": "<p>Free</p><p>Shipping<br/><br/></p>",
+            "text_3": "<p>Free</p><p>Shipping</p>",
             "icon_4": "shopify://shop_images/plant-02.svg",
             "text_4": "<p>Toxin</p><p>Free</p>"
           }
@@ -137,6 +137,15 @@
             "delivery_days": 5,
             "message": "Get it delivered by [date]"
           }
+        },
+        "complete_the_kit_UG4PtJ": {
+          "type": "complete_the_kit",
+          "settings": {
+            "completethekitproducts": [
+              "sauce-containers",
+              "thermotot"
+            ]
+          }
         }
       },
       "block_order": [
@@ -155,7 +164,8 @@
         "feature_chart_CmQfeV",
         "offer_H7f37R",
         "offer_XQYUTf",
-        "delivery_estimation_UABHDW"
+        "delivery_estimation_UABHDW",
+        "complete_the_kit_UG4PtJ"
       ],
       "settings": {
         "full_width": true,
@@ -657,6 +667,8 @@
         "products_count": 4,
         "products_per_row_mobile": "2",
         "products_per_row_desktop": 4,
+        "desktop_svg_top": "",
+        "mobile_svg_top": "",
         "part_1": "Meet",
         "part_2": "PixieDash",
         "part_3": "the Keeper of Colors!",
@@ -665,8 +677,6 @@
         "color_3": "#ffffff",
         "subtext": "<p>Each morning, with a swirl of its magic potion, PixieDash paints the world anew.</p>",
         "subtext_color": "#ffffff",
-        "link_url": "",
-        "link_text": "View all",
         "background": "",
         "background_gradient": "",
         "text_color": "",

@@ -1,0 +1,133 @@
+<div class="kit-product-card" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+  <div class="kit-product-image-wrapper">
+    {%- if product.featured_media -%}
+      {{ product.featured_media | image_url: width: 200 | image_tag: class: 'kit-product-image', loading: 'lazy' }}
+    {%- endif -%}
+  </div>
+  <div class="kit-product-details">
+    <div class="kit-product-info">
+      <h3 class="kit-product-title">{{ product.title }}</h3>
+      {%- if product.metafields.descriptor.subtitle != blank -%}
+         <p class="kit-product-subtitle">{{ product.metafields.descriptor.subtitle }}</p>
+      {%- elsif product.description != blank -%}
+         <p class="kit-product-subtitle">{{ product.description | strip_html | truncate: 60 }}</p>
+      {%- endif -%}
+      
+      <div class="kit-product-price-wrapper">
+         <span class="kit-product-price">{{ product.price | money }}</span>
+         {% if product.compare_at_price > product.price %}
+           <span class="kit-product-compare-price">{{ product.compare_at_price | money }}</span>
+           <span class="kit-product-discount">{{ product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round }}% OFF</span>
+         {% endif %}
+      </div>
+    </div>
+    
+    <div class="kit-product-actions">
+      {%- assign in_cart = false -%}
+      {%- for item in cart.items -%}
+        {%- if item.id == product.selected_or_first_available_variant.id -%}
+          {%- assign in_cart = true -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- capture unique_id -%}kit-{{ product.id }}-{{ section.id }}{%- endcapture -%}
+      
+      <div class="kit-action-add" {% if in_cart %}style="display:none"{% endif %}>
+         {%- form 'product', product, is: 'product-form', id: unique_id -%}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <input type="hidden" name="quantity" value="1">
+            <button class="btn-add-kit-item" type="submit">
+               <svg xmlns="http://www.w3.org/2000/svg" width="37" height="37" viewBox="0 0 37 37" fill="none">
+                  <rect width="37" height="37" rx="18.5" fill="#C8E616"/>
+                  <g clip-path="url(#clip0_1391_15234_{{ product.id }})">
+                  <path d="M14.0312 18.5H22.9688" stroke="#1A332E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M14.0312 18.5H22.9688" stroke="black" stroke-opacity="0.2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M18.5 14.0312V22.9688" stroke="#1A332E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M18.5 14.0312V22.9688" stroke="black" stroke-opacity="0.2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </g>
+                  <defs>
+                  <clipPath id="clip0_1391_15234_{{ product.id }}">
+                  <rect width="13" height="13" fill="white" transform="translate(12 12)"/>
+                  </clipPath>
+                  </defs>
+                </svg>
+            </button>
+         {%- endform -%}
+      </div>
+
+      <div class="kit-action-remove" {% unless in_cart %}style="display:none"{% endunless %}>
+         <button class="btn-remove-kit-item" type="button" data-variant-id="{{ product.selected_or_first_available_variant.id }}">
+           <svg xmlns="http://www.w3.org/2000/svg" width="37" height="33" viewBox="0 0 37 33" fill="none">
+              <rect width="37" height="33" rx="16.5" fill="#00906C"/>
+              <path d="M14.5 16.6667L17.1667 19L22.5 14" stroke="#F9F9EC" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+         </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // Unique scope for this snippet/section
+    const container = document.currentScript.previousElementSibling;
+    const variantId = {{ product.selected_or_first_available_variant.id }};
+    const addContainer = container.querySelector('.kit-action-add');
+    const removeContainer = container.querySelector('.kit-action-remove');
+    const removeBtn = removeContainer.querySelector('button');
+    const form = addContainer.querySelector('form');
+
+    // Handle Add Success (listens to theme event or relies on re-render, but theme 'product-form' usually emits events)
+    // The 'product-form' component in theme.js emits 'variant:add'.
+    form.addEventListener('variant:add', function(e) {
+      // Toggle UI
+      addContainer.style.display = 'none';
+      removeContainer.style.display = 'block';
+    });
+
+    // Handle Remove
+    removeBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      // Add loading state if desired (e.g., opacity)
+      removeBtn.style.opacity = '0.5';
+
+      const bodies = JSON.stringify({
+        updates: {
+          [variantId]: 0
+        },
+        sections: ['cart-drawer', 'cart-notification-drawer', 'header'] // Request updated cart sections
+      });
+
+      fetch(`${Shopify.routes.root}cart/update.js`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: bodies
+      })
+      .then(response => response.json())
+      .then(data => {
+        // Toggle UI back
+        addContainer.style.display = 'block';
+        removeContainer.style.display = 'none';
+        removeBtn.style.opacity = '1';
+
+        // Notify theme of cart change to update drawer/header
+        document.documentElement.dispatchEvent(new CustomEvent('cart:change', {
+            bubbles: true,
+            detail: {
+                cart: data,
+                baseEvent: 'update'
+            }
+        }));
+      })
+      .catch(error => {
+        console.error('Error removing item:', error);
+        removeBtn.style.opacity = '1';
+      });
+    });
+  })();
+</script>

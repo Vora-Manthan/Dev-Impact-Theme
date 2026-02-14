@@ -163,10 +163,14 @@ Supported variables
           {%- if previous_block.type != 'price' -%}
             <div class="product-info__rating">
               {%- render 'product-rating', product: product, show_empty: block.settings.show_empty, block: block -%}
+              {%if product.metafields.custom.custom_badges != blank %}
+               {% render 'custom_badges', product: product %}
+              {% endif %}
             </div>
           {%- endif -%}
           {%- if previous_block.type == 'badges' -%}
             {%- render 'product-badges', product: product, context: 'product', types: 'custom', class: 'product-info__badge-list' -%}
+
           {%- endif -%}
         {%- when 'payment_terms' -%}
           <payment-terms class="product-info__payment-terms">
@@ -449,120 +453,12 @@ Supported variables
           {% if block.settings.completethekitproducts != blank %}
             <div class="info-combo-product">
               <p class="kit-heading">Complete the Kit</p>
-              {% for kitprod in block.settings.completethekitproducts %}
-                {%- render 'kit-product', product: kitprod, show_add_to_cart: true -%}
-              {% endfor %}
+              <div class="kit-products">
+                {% for kitprod in block.settings.completethekitproducts %}
+                  {%- render 'kit-product', product: kitprod, show_add_to_cart: true -%}
+                {% endfor %}
+              </div>
             </div>
-            <script>
-              // Grab the main product form
-              const shopifyMainForm = document.querySelector('.shopify-section--main-product .product-info .product-info__block-item[data-block-type="quantity-selector"] form');
-
-              // Grab the main price display element
-              const mainPriceEl = document.querySelector(
-                'section.shopify-section--main-product .section .product .product-info .product-info__price .rating-with-text .price-list sale-price'
-              );
-
-              // Grab the quick add price element
-              const quickAddPriceEl = document.querySelectorAll(
-                'section.shopify-section--main-product product-rerender product-quick-add sale-price'
-              );
-              
-              // Parse base price from the text content (₹ 1,749 → 1749)
-              let basePrice = parseInt(mainPriceEl?.textContent.replace(/[^0-9]/g, '')) || 0;
-              let extraPrice = 0;
-              
-              // Utility to format numbers into INR like "₹ 1,749"
-              const formatINR = (price) => `₹ ${price.toLocaleString('en-IN')}`;
-              
-              // Update the total visible price
-              const updateTotalPrice = () => {
-                const total = basePrice + extraPrice;
-                const formatted = formatINR(total);
-                
-                if (mainPriceEl) {
-                  mainPriceEl.textContent = formatted;
-                }
-              
-                // ✅ Re-query live each time in case it's dynamically added later
-                const liveQuickAddPriceEls = document.querySelectorAll(
-                  '.shopify-section--main-product .product-quick-add sale-price'
-                );
-                if (liveQuickAddPriceEls) {
-                  liveQuickAddPriceEls.forEach(el => {
-                    el.textContent = formatted;
-                  });
-                }
-              };
-            
-              // Function to add hidden input for a variant
-              function addKitProductToForm(variantId) {
-                // Check if it's already there
-                if (shopifyMainForm.querySelector(`[name="items[][id]"][value="${variantId}"]`)) return;
-            
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'items[][id]';
-                input.value = variantId;
-                input.dataset.kitItem = variantId; // add an identifier for future removal
-                shopifyMainForm.appendChild(input);
-              }
-            
-              // Function to remove hidden input for a variant
-              function removeKitProductFromForm(variantId) {
-                const input = shopifyMainForm.querySelector(`[data-kit-item="${variantId}"]`);
-                if (input) {
-                  input.remove();
-                }
-              }
-            
-              // Bind to "Add" and "Remove" buttons
-              document.querySelectorAll('.btn-add-kit-item').forEach(button => {
-                const variantId = button.dataset.variantId;
-
-                const price = parseInt(button.dataset.price) || 0;
-                
-                button.addEventListener('click', () => {
-                  addKitProductToForm(variantId);
-                  button.style.display = 'none';
-                  const addedStatus = button.nextElementSibling;
-                  const removeBtn = addedStatus?.nextElementSibling;
-                  if (addedStatus && addedStatus.classList.contains('btn-added-to-main')) {
-                    addedStatus.style.display = 'inline-block';
-                  }
-                  if (removeBtn && removeBtn.classList.contains('btn-remove-kit-item')) {
-                    removeBtn.style.display = 'inline-block';
-                  }
-
-                  extraPrice += price;
-                  updateTotalPrice();
-                  
-                });
-              });
-            
-              document.querySelectorAll('.btn-remove-kit-item').forEach(button => {
-                const variantId = button.dataset.variantId;
-
-                const addedStatus = button.previousElementSibling;
-                const addBtn = addedStatus?.previousElementSibling;
-                const price = parseInt(addBtn?.dataset.price) || 0;
-                
-                button.addEventListener('click', () => {
-                  removeKitProductFromForm(variantId);
-                  button.style.display = 'none';
-                  if (addBtn && addBtn.classList.contains('btn-add-kit-item')) {
-                    addBtn.style.display = 'inline-block';
-                  }
-              
-                  if (addedStatus && addedStatus.classList.contains('btn-added-to-main')) {
-                    addedStatus.style.display = 'none';
-                  }
-
-                  extraPrice -= price;
-                  updateTotalPrice();
-                  
-                });
-              });
-            </script>
           {% endif %}
         
         {%- when 'custom_badges' -%}
